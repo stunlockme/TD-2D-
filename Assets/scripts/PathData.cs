@@ -19,6 +19,10 @@ public static class PathData
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="spawnPoint"></param>
     public static void CalcPath(GridPos spawnPoint)
     {
         if (nodeData == null)

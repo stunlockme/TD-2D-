@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,17 +21,17 @@ public static class PathData
     }
 
     /// <summary>
-    /// 
+    /// calculates the shortest path to destination
     /// </summary>
-    /// <param name="spawnPoint"></param>
-    public static void CalcPath(GridPos spawnPoint)
+    /// <param name="spawnPos"></param>
+    public static void CalcPath(GridPos spawnPos, GridPos destinationPos)
     {
         if (nodeData == null)
             SpawnNode();
 
         HashSet<Node> nodeIsOpen = new HashSet<Node>();
         HashSet<Node> nodeIsClosed = new HashSet<Node>();
-        Node currentNode = nodeData[spawnPoint];
+        Node currentNode = nodeData[spawnPos];
         nodeIsOpen.Add(currentNode);
 
         for (int x = -1; x <= 1; x++)
@@ -42,13 +43,27 @@ public static class PathData
                 {
                     if(nodeData.ContainsKey(tmp) && !LevelGenerator.Instance.tiles[tmp].IsTowerPlaced)
                     {
+                        int costToMove = 0;
+                        if(Math.Abs(x - y) == 1)
+                        {
+                            costToMove = 10;
+                        }
+                        else
+                        {
+                            costToMove = 14;
+                        }
                         Node possibleNode = nodeData[tmp];
                         if (!nodeIsOpen.Contains(possibleNode))
                             nodeIsOpen.Add(possibleNode);
 
                         possibleNode.SetParent(currentNode);
-                        Debug.Log(possibleNode.parent.gridPos.X);
-                        Debug.Log(possibleNode.parent.gridPos.Y);
+                        possibleNode.SetCost(costToMove, nodeData[destinationPos]);
+
+                        //Debug.Log(possibleNode.costToMove);
+                        Debug.Log(possibleNode.estimatedCost);
+                        Debug.Log(possibleNode.finalCost);
+                        //Debug.Log(possibleNode.parent.gridPos.X);
+                       // Debug.Log(possibleNode.parent.gridPos.Y);
                     }
                 }
             }
@@ -56,7 +71,7 @@ public static class PathData
         nodeIsOpen.Remove(currentNode);
         nodeIsClosed.Add(currentNode);
 
-        if (nodeIsClosed.Contains(currentNode))
-            Debug.Log("current node is closed");
+        //if (nodeIsClosed.Contains(currentNode))
+            //Debug.Log("current node is closed");
     }
 }

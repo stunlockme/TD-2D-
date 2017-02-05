@@ -26,8 +26,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
     [SerializeField]
     private GameObject mapTiles;
 
-    private GridPos startPoint;
-    private GridPos endPoint;
+    private GridPos spawnPos;
+    private GridPos destinationPos;
     public Dictionary<GridPos, TileData> tiles { get; set; }
     private float tileSizeX;
     private float tileSizeY;
@@ -42,8 +42,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
         this.tiles = new Dictionary<GridPos, TileData>();
 
         //set spawn and end point of creeps
-        this.startPoint = new GridPos((int)this.spawnPoint.x, (int)this.spawnPoint.y);
-        this.endPoint = new GridPos((int)this.destroyPoint.x, (int)this.destroyPoint.y);
+        this.spawnPos = new GridPos((int)this.spawnPoint.x, (int)this.spawnPoint.y);
+        this.destinationPos = new GridPos((int)this.destroyPoint.x, (int)this.destroyPoint.y);
     }
 
     private void Start ()
@@ -55,7 +55,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.T))
-            PathData.CalcPath(startPoint);
+            PathData.CalcPath(this.spawnPos, this.destinationPos);
     }
     /// <summary>
     /// generates the map
@@ -136,9 +136,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private void SpawnPoints()
     {
         //create the starting point of creeps
-        Instantiate(this.startPos, this.tiles[this.startPoint].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
+        Instantiate(this.startPos, this.tiles[this.spawnPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
 
         //create the end point of creeps
-        Instantiate(this.endPos, this.tiles[this.endPoint].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
+        Instantiate(this.endPos, this.tiles[this.destinationPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
     }
 }

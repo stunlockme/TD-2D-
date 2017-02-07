@@ -59,9 +59,9 @@ public static class PathData
                         possibleNode.SetParent(currentNode);
                         possibleNode.SetCost(costToMove, nodeData[destinationPos]);
 
-                        //Debug.Log(possibleNode.costToMove);
-                        Debug.Log(possibleNode.estimatedCost);
-                        Debug.Log(possibleNode.finalCost);
+                        Debug.Log("cost to Move" + possibleNode.costToMove);
+                        Debug.Log("estimated cost" + possibleNode.estimatedCost);
+                        Debug.Log("final cost" + possibleNode.finalCost);
                         //Debug.Log(possibleNode.parent.gridPos.X);
                        // Debug.Log(possibleNode.parent.gridPos.Y);
                     }

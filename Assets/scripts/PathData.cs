@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class PathData
@@ -26,52 +27,117 @@ public static class PathData
     /// <param name="spawnPos"></param>
     public static void CalcPath(GridPos spawnPos, GridPos destinationPos)
     {
+        //null check the node dictionary
         if (nodeData == null)
             SpawnNode();
 
+        //initialize open, closed container sets
         HashSet<Node> nodeIsOpen = new HashSet<Node>();
         HashSet<Node> nodeIsClosed = new HashSet<Node>();
+
+        //set the start of search to the creep spawn position
         Node currentNode = nodeData[spawnPos];
+
+        //add node to the open set
         nodeIsOpen.Add(currentNode);
 
-        for (int x = -1; x <= 1; x++)
+        //loop until open set contains a node
+        while(nodeIsOpen.Count > 0)
         {
-            for (int y = -1; y <= 1; y++)
+            for (int x = -1; x <= 1; x++)
             {
-                GridPos tmp = new GridPos(currentNode.gridPos.X - x, currentNode.gridPos.Y - y);
-                if (tmp != currentNode.gridPos)
+                for (int y = -1; y <= 1; y++)
                 {
-                    if(nodeData.ContainsKey(tmp) && !LevelGenerator.Instance.tiles[tmp].IsTowerPlaced)
+                    //get grid position of surrounding nodes
+                    GridPos tmp = new GridPos(currentNode.gridPos.X - x, currentNode.gridPos.Y - y);
+
+                    //ignore the current node from the search
+                    if (tmp != currentNode.gridPos)
                     {
-                        int costToMove = 0;
-                        if(Math.Abs(x - y) == 1)
+                        //check if the grid position is valid, check if tower is placed
+                        if (nodeData.ContainsKey(tmp) && !LevelGenerator.Instance.tiles[tmp].IsTowerPlaced)
                         {
-                            costToMove = 10;
-                        }
-                        else
-                        {
-                            costToMove = 14;
-                        }
-                        Node possibleNode = nodeData[tmp];
-                        if (!nodeIsOpen.Contains(possibleNode))
-                            nodeIsOpen.Add(possibleNode);
+                            int costToMove = 0;
+                            if (Math.Abs(x - y) == 1)
+                                costToMove = 10;        //up, down, forward, back
+                            else
+                                costToMove = 14;        //diagonal
 
-                        possibleNode.SetParent(currentNode);
-                        possibleNode.SetCost(costToMove, nodeData[destinationPos]);
+                            //get the possible node data from the dictionary
+                            Node possibleNode = nodeData[tmp];
 
-                        Debug.Log("cost to Move" + possibleNode.costToMove);
-                        Debug.Log("estimated cost" + possibleNode.estimatedCost);
-                        Debug.Log("final cost" + possibleNode.finalCost);
-                        //Debug.Log(possibleNode.parent.gridPos.X);
-                       // Debug.Log(possibleNode.parent.gridPos.Y);
+                            //check if the open set contains the possible node
+                            if (nodeIsOpen.Contains(possibleNode))
+                            {
+                                if (currentNode.costToMove + costToMove < possibleNode.costToMove)
+                                {
+                                    possibleNode.SetParent(currentNode);
+                                    possibleNode.SetCost(costToMove, nodeData[destinationPos]);
+                                }
+                            }
+                            //check if the closed set contains the possible node
+                            else if (!nodeIsClosed.Contains(possibleNode))
+                            {
+                                nodeIsOpen.Add(possibleNode);
+                                possibleNode.SetParent(currentNode);
+                                possibleNode.SetCost(costToMove, nodeData[destinationPos]);
+                            }
+                            /************************DEBUG************************************/
+                            //Debug.Log("cost to Move" + possibleNode.costToMove);
+                            //Debug.Log("estimated cost" + possibleNode.estimatedCost);
+                            //Debug.Log("final cost" + possibleNode.finalCost);
+                            //Debug.Log(possibleNode.parent.gridPos.X);
+                            // Debug.Log(possibleNode.parent.gridPos.Y);
+                        }
                     }
                 }
             }
-        }
-        nodeIsOpen.Remove(currentNode);
-        nodeIsClosed.Add(currentNode);
 
-        //if (nodeIsClosed.Contains(currentNode))
+            //remove the current node from the open set and add it to the closed set after the search is complete
+            nodeIsOpen.Remove(currentNode);
+            nodeIsClosed.Add(currentNode);
+
+            //set the current node to be the node that contains least final cost
+            if (nodeIsOpen.Count > 0)
+                currentNode = nodeIsOpen.OrderBy(node => node.finalCost).First();
+
+            if (currentNode == nodeData[destinationPos])
+            {
+                List<Node> shortestPath = new List<Node>();
+                while (currentNode.gridPos != spawnPos)
+                {
+                    shortestPath.Add(currentNode);
+                    currentNode = currentNode.parent;
+                }
+                //shortestPath.Reverse();
+                foreach(Node n in shortestPath)
+                {
+                    Debug.Log(n.gridPos.X + " "+ n.gridPos.Y);
+                }
+                for(int i = 0; i < shortestPath.Count; i++)
+                {
+                    Debug.Log(shortestPath.ElementAt(i).gridPos.X + " " + shortestPath.ElementAt(i).gridPos.Y);
+                }
+                if (shortestPath.Count > 0)
+                    Debug.Log(shortestPath.Count);
+                break;
+            }
+
+            //Stack<Node> shortestPath = new Stack<Node>();
+            //if (currentNode == nodeData[destinationPos])
+            //{
+            //    while (currentNode.gridPos != spawnPos)
+            //    {
+            //        shortestPath.Push(currentNode);
+            //        currentNode = currentNode.parent;
+            //        Debug.Log(shortestPath.Peek().gridPos.X);
+            //        Debug.Log(shortestPath.Peek().gridPos.Y);
+            //    }
+            //    break;
+            //}
+
+            //if (nodeIsClosed.Contains(currentNode))
             //Debug.Log("current node is closed");
+        }
     }
 }

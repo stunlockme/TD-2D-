@@ -37,7 +37,7 @@ public class Node
 
     public void SetCost(int costToMove, Node destination)
     {
-        this.costToMove = costToMove;
+        this.costToMove = this.parent.costToMove + costToMove;
         this.estimatedCost = ((Math.Abs(gridPos.X - destination.gridPos.X)) + Math.Abs((gridPos.Y - destination.gridPos.Y))) * this.toConvert;
         this.finalCost = this.costToMove + this.estimatedCost;
     }

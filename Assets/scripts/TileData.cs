@@ -39,6 +39,8 @@ public class TileData : MonoBehaviour
         this.colorList = new List<Color32>();
         this.colorList.Add(new Color32(255, 0, 0, 255));
         this.colorList.Add(new Color32(0, 0, 255, 255));
+
+        this.spriteRenderer.sortingOrder = -1;
 	}
 
 	private void Update ()

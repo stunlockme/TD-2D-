@@ -6,7 +6,25 @@ using UnityEngine;
 public class LevelGenerator : Singleton<LevelGenerator>
 {
     [SerializeField]
-    private List<GameObject> tilePrefabs;
+    private List<GameObject> tileR0;
+
+    [SerializeField]
+    private List<GameObject> tileR1;
+
+    [SerializeField]
+    private List<GameObject> tileR2;
+
+    [SerializeField]
+    private List<GameObject> tileR3;
+
+    [SerializeField]
+    private List<GameObject> tileR4;
+
+    [SerializeField]
+    private List<GameObject> tileR5;
+
+    [SerializeField]
+    private List<GameObject> tileR6;
 
     [SerializeField]
     private CameraInput cameraInput;
@@ -32,11 +50,13 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private float tileSizeX;
     private float tileSizeY;
 
+    private TileData tmpTile;
+
     private void Awake()
     {
         //get tile width and height
-        this.tileSizeX = this.tilePrefabs[0].GetComponent<SpriteRenderer>().bounds.size.x;
-        this.tileSizeY = this.tilePrefabs[0].GetComponent<SpriteRenderer>().bounds.size.y;
+        this.tileSizeX = this.tileR0[0].GetComponent<SpriteRenderer>().bounds.size.x;
+        this.tileSizeY = this.tileR0[0].GetComponent<SpriteRenderer>().bounds.size.y;
 
         //initialize dictionary 
         this.tiles = new Dictionary<GridPos, TileData>();
@@ -80,9 +100,19 @@ public class LevelGenerator : Singleton<LevelGenerator>
         for (int y = 0; y < mapY; y++)
         {
             char[] tileTypes = mapResource[y].ToCharArray();
+            char[] tmpChar = new char[2];
+            tmpChar[0] = tileTypes[10];
+            tmpChar[1] = tileTypes[11];
+            string s = new string(tmpChar);
+            //Debug.Log(s);
+            //Debug.Log(tileTypes.Length);
             for (int x = 0; x < mapX; x++)
             {
-                SpawnTile(tileTypes[x].ToString(), x, y, topLeftWorld);
+                //Debug.Log(mapX);
+                if (x < 10)
+                    SpawnTile(tileTypes[x].ToString(), x, y, topLeftWorld);
+                else
+                    SpawnTile(s, x, y, topLeftWorld);
             }
         }
 
@@ -90,9 +120,25 @@ public class LevelGenerator : Singleton<LevelGenerator>
         maxTile = tiles[new GridPos(mapX - 1, mapY - 1)].transform.position;
 
         //restrict camera to bounds of the map
-        this.cameraInput.RestrictCamera(new Vector3(this.tileSizeX + maxTile.x, maxTile.y - this.tileSizeY));
+        //this.cameraInput.RestrictCamera(new Vector3(this.tileSizeX + maxTile.x, maxTile.y - this.tileSizeY));
+
+        this.cameraInput.RestrictCamera(new Vector3(maxTile.x, maxTile.y));
 
         SpawnPoints();
+
+
+        for (int y = 0; y < 8; y++)
+        {
+            int x = mapX - 1;
+            GridPos lastTile = new GridPos(x, y);
+
+            if(this.tiles.ContainsKey(lastTile))
+            {
+                this.tiles[lastTile].transform.gameObject.SetActive(false);
+                this.tiles.Remove(lastTile);
+                //Destroy(this.tiles[lastTile].transform.gameObject);
+            }
+        }
     }
 
     /// <summary>
@@ -106,9 +152,23 @@ public class LevelGenerator : Singleton<LevelGenerator>
     {
         //store tile type as an int
         int tileIndex = int.Parse(tileType);
+        //TileData tmpTile = Instantiate(tilePrefabs[tileIndex]).GetComponent<TileData>();
 
-        //create the tile
-        TileData tmpTile = Instantiate(tilePrefabs[tileIndex]).GetComponent<TileData>();
+        //create the tiles
+        if (y == 0)
+            tmpTile = Instantiate(this.tileR0[tileIndex]).GetComponent<TileData>();
+        else if (y == 1)
+            tmpTile = Instantiate(this.tileR1[tileIndex]).GetComponent<TileData>();
+        else if (y == 2)
+            tmpTile = Instantiate(this.tileR2[tileIndex]).GetComponent<TileData>();
+        else if (y == 3)
+            tmpTile = Instantiate(this.tileR3[tileIndex]).GetComponent<TileData>();
+        else if (y == 4)
+            tmpTile = Instantiate(this.tileR4[tileIndex]).GetComponent<TileData>();
+        else if (y == 5)
+            tmpTile = Instantiate(this.tileR5[tileIndex]).GetComponent<TileData>();
+        else if (y == 6)
+            tmpTile = Instantiate(this.tileR6[tileIndex]).GetComponent<TileData>();
 
         //set the grid position and world position of tile
         tmpTile.SetTile(new GridPos(x, y), new Vector3(topLeftWorld.x + (this.tileSizeX * x), topLeftWorld.y - (this.tileSizeY * y), 0), this.mapTiles);

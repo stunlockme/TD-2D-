@@ -101,8 +101,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
         {
             char[] tileTypes = mapResource[y].ToCharArray();
             char[] tmpChar = new char[2];
-            tmpChar[0] = tileTypes[10];
-            tmpChar[1] = tileTypes[11];
+            tmpChar[0] = tileTypes[mapX - 2];
+            tmpChar[1] = tileTypes[mapX - 1];
             string s = new string(tmpChar);
             //Debug.Log(s);
             //Debug.Log(tileTypes.Length);
@@ -126,7 +126,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         SpawnPoints();
 
-
+        //disable the last coloumn of tiles
         for (int y = 0; y < 8; y++)
         {
             int x = mapX - 1;

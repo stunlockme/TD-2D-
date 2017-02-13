@@ -6,6 +6,8 @@ public class MouseIcon : Singleton<MouseIcon>
 {
     private SpriteRenderer spriteRenderer;
     private Camera cam;
+    [SerializeField]
+    private GameObject towerButtons;
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class MouseIcon : Singleton<MouseIcon>
     private void Update()
     {
         GetMousePos();
+        DisableUI();
     }
 
     /// <summary>
@@ -54,9 +57,21 @@ public class MouseIcon : Singleton<MouseIcon>
     public void DisableRenderer()
     {
         //disable sprite renderer
-        this.spriteRenderer.enabled = false;
+        //this.spriteRenderer.enabled = false;
+
+        //set the sprite to null
+        this.spriteRenderer.sprite = null;
 
         //set user interface object to null
         GameHandler.Instance.selectedBtn = null;
+    }
+
+    private void DisableUI()
+    {
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            if (this.spriteRenderer.sprite == null)
+                this.towerButtons.SetActive(!this.towerButtons.activeSelf);
+        }
     }
 }

@@ -20,10 +20,19 @@ public class GameHandler : Singleton<GameHandler>
     [SerializeField]
     private string cursorName;
 
+    [SerializeField]
+    private List<GameObject> creepList;
+
+    private string ranger;
+    private string puck;
+
     private void Awake()
     {
         //load the cursor icon as a texture2d
         this.cursorTexture = Resources.Load(cursorName) as Texture2D;
+
+        this.ranger = "ranger";
+        this.puck = "puck";
     }
 
     private void Start ()
@@ -103,5 +112,53 @@ public class GameHandler : Singleton<GameHandler>
     private void SetCustomCursor()
     {
         Cursor.SetCursor(cursorTexture, this.cursorOffset, this.cursorMode);
+    }
+
+    /// <summary>
+    /// spawn creeps when button is clicked
+    /// </summary>
+    public void SpawnCreeps()
+    {
+        StartCoroutine(CreateCreep());
+    }
+
+    /// <summary>
+    /// create creeps of random type
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator CreateCreep()
+    {
+        int creepIndex = Random.Range(0, 2);
+        string type = string.Empty;
+        switch(creepIndex)
+        {
+            case 0:
+                type = this.ranger;
+                break;
+            case 1:
+                type = this.puck;
+                break;
+        }
+        GetType(type);
+        yield return new WaitForSeconds(1.0f);
+    }
+
+    /// <summary>
+    /// loop through the creep list to find the creep type
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    private GameObject GetType(string type)
+    {
+        for (int i = 0; i < creepList.Count; i++)
+        {
+            if(creepList[i].name == type)
+            {
+                GameObject tmpObj = Instantiate(creepList[i]);
+                tmpObj.name = type;
+                return tmpObj;
+            }
+        }
+        return null;
     }
 }

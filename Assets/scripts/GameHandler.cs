@@ -139,7 +139,9 @@ public class GameHandler : Singleton<GameHandler>
                 type = this.puck;
                 break;
         }
-        GetType(type);
+        Creep creep = GetType(type).GetComponent<Creep>();
+        creep.Spawn();
+
         yield return new WaitForSeconds(1.0f);
     }
 

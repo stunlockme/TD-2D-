@@ -44,13 +44,16 @@ public class LevelGenerator : Singleton<LevelGenerator>
     [SerializeField]
     private GameObject mapTiles;
 
+    [SerializeField]
+    private List<string> mapList;
+
     private GridPos spawnPos;
     private GridPos destinationPos;
     public Dictionary<GridPos, TileData> tiles { get; set; }
     private float tileSizeX;
     private float tileSizeY;
-
     private TileData tmpTile;
+    public CreepGate creepGate { get; set; }
 
     private void Awake()
     {
@@ -68,8 +71,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
     private void Start ()
     {
-        SpawnLevel();
-        //PathData.CalcPath(startPoint);
+        SpawnLevel(this.mapList[0]);
 	}
 
     private void Update()
@@ -77,13 +79,15 @@ public class LevelGenerator : Singleton<LevelGenerator>
         if(Input.GetKeyDown(KeyCode.T))
             PathData.CalcPath(this.spawnPos, this.destinationPos);
     }
+    
     /// <summary>
-    /// generates the map
+    /// generates the maps
     /// </summary>
-    private void SpawnLevel()
+    /// <param name="mapType"></param>
+    private void SpawnLevel(string mapType)
     {
         //store map data 
-        string[] mapResource = ReadMapFile();
+        string[] mapResource = ReadMapFile(mapType);
 
         //get number of characters in each row
         int mapX = mapResource[0].ToCharArray().Length;
@@ -104,11 +108,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
             tmpChar[0] = tileTypes[mapX - 2];
             tmpChar[1] = tileTypes[mapX - 1];
             string s = new string(tmpChar);
-            //Debug.Log(s);
-            //Debug.Log(tileTypes.Length);
+
             for (int x = 0; x < mapX; x++)
             {
-                //Debug.Log(mapX);
                 if (x < 10)
                     SpawnTile(tileTypes[x].ToString(), x, y, topLeftWorld);
                 else
@@ -138,6 +140,39 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 this.tiles.Remove(lastTile);
                 //Destroy(this.tiles[lastTile].transform.gameObject);
             }
+        }
+
+        //set the map border not able to place towers
+        if (mapType == this.mapList[0])
+        {
+            GridPos gridPos;
+            for (int y = 0; y < mapY; y++)
+            {
+                int x = 0;
+                gridPos = new GridPos(x, y);
+                this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
+            }
+            for (int y = 2; y < mapY; y++)
+            {
+                int x = mapX - 2;
+                gridPos = new GridPos(x, y);
+                this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
+            }
+            for (int x = 0; x < mapX - 1; x++)
+            {
+                int y = 0;
+                gridPos = new GridPos(x, y);
+                this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
+            }
+            for (int x = 1; x < mapX - 1; x++)
+            {
+                int y = mapY - 1;
+                gridPos = new GridPos(x, y);
+                this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
+            }
+            gridPos = new GridPos((int)this.spawnPoint.x + 1, (int)this.spawnPoint.y);
+            this.tiles[gridPos].GetComponent<TileData>().SpecialCase = true;
+            this.tiles[destinationPos].GetComponent<TileData>().SpecialCase = true;
         }
     }
 
@@ -178,10 +213,10 @@ public class LevelGenerator : Singleton<LevelGenerator>
     /// loads the map text file
     /// </summary>
     /// <returns> each row in the map as a string</returns>
-    private string[] ReadMapFile()
+    private string[] ReadMapFile(string mapType)
     {
         //loads the map text file as a TextAsset
-        TextAsset getData = Resources.Load("map") as TextAsset;
+        TextAsset getData = Resources.Load(mapType) as TextAsset;
 
         //replaces ',' with empty string
         string finalData = getData.text.Replace(Environment.NewLine, string.Empty);
@@ -196,7 +231,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private void SpawnPoints()
     {
         //create the starting point of creeps
-        Instantiate(this.startPos, this.tiles[this.spawnPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
+        GameObject tmp = (GameObject)Instantiate(this.startPos, this.tiles[this.spawnPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
+        this.creepGate = tmp.GetComponent<CreepGate>();
 
         //create the end point of creeps
         Instantiate(this.endPos, this.tiles[this.destinationPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);

@@ -76,6 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\scripts\CameraInput.cs" />
+    <Compile Include="Assets\scripts\Creep.cs" />
+    <Compile Include="Assets\scripts\CreepGate.cs" />
     <Compile Include="Assets\scripts\GameHandler.cs" />
     <Compile Include="Assets\scripts\GridPos.cs" />
     <Compile Include="Assets\scripts\LevelGenerator.cs" />

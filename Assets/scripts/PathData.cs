@@ -35,6 +35,8 @@ public static class PathData
         HashSet<Node> nodeIsOpen = new HashSet<Node>();
         HashSet<Node> nodeIsClosed = new HashSet<Node>();
 
+        Stack<Node> shortestPath = new Stack<Node>();
+
         //set the start of search to the creep spawn position
         Node currentNode = nodeData[spawnPos];
 
@@ -103,41 +105,41 @@ public static class PathData
 
             if (currentNode == nodeData[destinationPos])
             {
-                List<Node> shortestPath = new List<Node>();
                 while (currentNode.gridPos != spawnPos)
                 {
-                    shortestPath.Add(currentNode);
+                    shortestPath.Push(currentNode);
                     currentNode = currentNode.parent;
+                    Debug.Log(shortestPath.Peek().gridPos.X);
+                    Debug.Log(shortestPath.Peek().gridPos.Y);
                 }
-                //shortestPath.Reverse();
-                foreach(Node n in shortestPath)
-                {
-                    Debug.Log(n.gridPos.X + " "+ n.gridPos.Y);
-                }
-                for(int i = 0; i < shortestPath.Count; i++)
-                {
-                    Debug.Log(shortestPath.ElementAt(i).gridPos.X + " " + shortestPath.ElementAt(i).gridPos.Y);
-                }
-                if (shortestPath.Count > 0)
-                    Debug.Log(shortestPath.Count);
                 break;
             }
-
-            //Stack<Node> shortestPath = new Stack<Node>();
-            //if (currentNode == nodeData[destinationPos])
-            //{
-            //    while (currentNode.gridPos != spawnPos)
-            //    {
-            //        shortestPath.Push(currentNode);
-            //        currentNode = currentNode.parent;
-            //        Debug.Log(shortestPath.Peek().gridPos.X);
-            //        Debug.Log(shortestPath.Peek().gridPos.Y);
-            //    }
-            //    break;
-            //}
 
             //if (nodeIsClosed.Contains(currentNode))
             //Debug.Log("current node is closed");
         }
     }
 }
+
+
+//if (currentNode == nodeData[destinationPos])
+//{
+//    List<Node> shortestPath = new List<Node>();
+//    while (currentNode.gridPos != spawnPos)
+//    {
+//        shortestPath.Add(currentNode);
+//        currentNode = currentNode.parent;
+//    }
+//    //shortestPath.Reverse();
+//    foreach(Node n in shortestPath)
+//    {
+//        Debug.Log(n.gridPos.X + " "+ n.gridPos.Y);
+//    }
+//    for(int i = 0; i < shortestPath.Count; i++)
+//    {
+//        Debug.Log(shortestPath.ElementAt(i).gridPos.X + " " + shortestPath.ElementAt(i).gridPos.Y);
+//    }
+//    if (shortestPath.Count > 0)
+//        Debug.Log(shortestPath.Count);
+//    break;
+//}

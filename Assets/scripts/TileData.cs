@@ -24,6 +24,24 @@ public class TileData : MonoBehaviour
         {
             return isTowerPlaced;
         }
+        set
+        {
+            isTowerPlaced = value;
+        }
+    }
+
+    private bool specialCase;
+    public bool SpecialCase
+    {
+        get
+        {
+            return specialCase;
+        }
+
+        set
+        {
+            specialCase = value;
+        }
     }
     private List<Color32> colorList;
 
@@ -51,6 +69,9 @@ public class TileData : MonoBehaviour
     /// <summary>
     /// sets the tile position in grid space and world space
     /// </summary>
+    /// <param name="gridPos"></param>
+    /// <param name="worldPos"></param>
+    /// <param name="mapTiles"></param>
     public void SetTile(GridPos gridPos, Vector3 worldPos, GameObject mapTiles)
     {
         this.gridPosition = gridPos;
@@ -86,7 +107,7 @@ public class TileData : MonoBehaviour
         {
             if (!this.isTowerPlaced)
                 this.spriteRenderer.color = this.colorList[1];
-            if (this.isTowerPlaced)
+            if (this.isTowerPlaced || this.specialCase)
                 this.spriteRenderer.color = this.colorList[0];
             else if (Input.GetMouseButtonDown(0))
                 SpawnTower();

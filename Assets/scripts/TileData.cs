@@ -43,6 +43,7 @@ public class TileData : MonoBehaviour
             specialCase = value;
         }
     }
+
     private List<Color32> colorList;
 
     private void Awake()
@@ -59,12 +60,13 @@ public class TileData : MonoBehaviour
         this.colorList.Add(new Color32(0, 0, 255, 255));
 
         this.spriteRenderer.sortingOrder = -1;
-	}
+
+    }
 
 	private void Update ()
     {
-		
-	}
+
+    }
 
     /// <summary>
     /// sets the tile position in grid space and world space
@@ -120,6 +122,7 @@ public class TileData : MonoBehaviour
     private void OnMouseExit()
     {
         this.spriteRenderer.color = Color.white;
+        return;
     }
 
     /// <summary>
@@ -133,5 +136,6 @@ public class TileData : MonoBehaviour
         this.isTowerPlaced = true;
         this.spriteRenderer.color = Color.white;
         GameHandler.Instance.ResetTower();
+        return;
     }
 }

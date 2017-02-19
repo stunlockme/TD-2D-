@@ -25,7 +25,7 @@ public static class PathData
     /// calculates the shortest path to destination
     /// </summary>
     /// <param name="spawnPos"></param>
-    public static void CalcPath(GridPos spawnPos, GridPos destinationPos)
+    public static Stack<Node> CalcPath(GridPos spawnPos, GridPos destinationPos)
     {
         //null check the node dictionary
         if (nodeData == null)
@@ -109,8 +109,8 @@ public static class PathData
                 {
                     shortestPath.Push(currentNode);
                     currentNode = currentNode.parent;
-                    Debug.Log(shortestPath.Peek().gridPos.X);
-                    Debug.Log(shortestPath.Peek().gridPos.Y);
+                    //Debug.Log(shortestPath.Peek().gridPos.X + " " + shortestPath.Peek().gridPos.Y);
+                    //Debug.Log(shortestPath.Peek().gridPos.Y);
                 }
                 break;
             }
@@ -118,6 +118,7 @@ public static class PathData
             //if (nodeIsClosed.Contains(currentNode))
             //Debug.Log("current node is closed");
         }
+        return shortestPath;
     }
 }
 

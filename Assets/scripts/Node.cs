@@ -12,6 +12,7 @@ public class Node
     public int costToMove { get; private set; }
     public int estimatedCost { get; private set; }
     public int finalCost { get; private set; }
+    public Vector2 worldPos { get; set; }
 
     private int toConvert;
 
@@ -24,6 +25,7 @@ public class Node
         this.toConvert = 10;
         this.tileData = tileData;
         this.gridPos = tileData.gridPosition;
+        this.worldPos = tileData.centreOfTile;
     }
 
     /// <summary>

@@ -34,6 +34,7 @@ public class MouseIcon : Singleton<MouseIcon>
             //set this object position to the mouse position in world space
             this.transform.position = this.cam.ScreenToWorldPoint(Input.mousePosition);
             this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
+            return;
         }
     }
 
@@ -48,6 +49,7 @@ public class MouseIcon : Singleton<MouseIcon>
 
         //enable sprite renderer
         this.spriteRenderer.enabled = true;
+        return;
     }
 
     /// <summary>
@@ -64,6 +66,7 @@ public class MouseIcon : Singleton<MouseIcon>
 
         //set user interface object to null
         GameHandler.Instance.selectedBtn = null;
+        return;
     }
 
     private void DisableUI()
@@ -72,6 +75,8 @@ public class MouseIcon : Singleton<MouseIcon>
         {
             if (this.spriteRenderer.sprite == null)
                 this.towerButtons.SetActive(!this.towerButtons.activeSelf);
+
+            return;
         }
     }
 }

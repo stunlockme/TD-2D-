@@ -54,6 +54,34 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private float tileSizeY;
     private TileData tmpTile;
     public CreepGate creepGate { get; set; }
+    private Stack<Node> wayPoints;
+    public Stack<Node> WayPoints
+    {
+        get
+        {
+            if(wayPoints == null)
+            {
+                CreateWayPoints(this.spawnPos, this.destinationPos);
+            }
+            return new Stack<Node>(new Stack<Node>(wayPoints));
+        }
+    }
+
+    public GridPos SpawnPos
+    {
+        get
+        {
+            return spawnPos;
+        }
+    }
+
+    public GridPos DestinationPos
+    {
+        get
+        {
+            return destinationPos;
+        }
+    }
 
     private void Awake()
     {
@@ -124,7 +152,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         //restrict camera to bounds of the map
         //this.cameraInput.RestrictCamera(new Vector3(this.tileSizeX + maxTile.x, maxTile.y - this.tileSizeY));
 
-        this.cameraInput.RestrictCamera(new Vector3(maxTile.x, maxTile.y));
+        this.cameraInput.RestrictCamera(new Vector3(maxTile.x, maxTile.y - this.tileSizeY));
 
         SpawnPoints();
 
@@ -168,12 +196,18 @@ public class LevelGenerator : Singleton<LevelGenerator>
             {
                 int y = mapY - 1;
                 gridPos = new GridPos(x, y);
+                //Debug.Log(gridPos.X + "" + gridPos.Y);
                 this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
             }
             gridPos = new GridPos((int)this.spawnPoint.x + 1, (int)this.spawnPoint.y);
             this.tiles[gridPos].GetComponent<TileData>().SpecialCase = true;
-            this.tiles[destinationPos].GetComponent<TileData>().SpecialCase = true;
+            this.tiles[this.destinationPos].GetComponent<TileData>().SpecialCase = true;
+            this.tiles[this.spawnPos].GetComponent<TileData>().IsTowerPlaced = false;
+            this.tiles[this.spawnPos].GetComponent<TileData>().SpecialCase = true;
+            gridPos = new GridPos((int)this.destroyPoint.x - 1, (int)this.destroyPoint.y);
+            this.tiles[gridPos].GetComponent<TileData>().SpecialCase = true;
         }
+        return;
     }
 
     /// <summary>
@@ -207,6 +241,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         //set the grid position and world position of tile
         tmpTile.SetTile(new GridPos(x, y), new Vector3(topLeftWorld.x + (this.tileSizeX * x), topLeftWorld.y - (this.tileSizeY * y), 0), this.mapTiles);
+        return;
     }
 
     /// <summary>
@@ -236,5 +271,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         //create the end point of creeps
         Instantiate(this.endPos, this.tiles[this.destinationPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
+        return;
+    }
+
+    public Stack<Node> CreateWayPoints(GridPos currentPos, GridPos destinationPos)
+    {
+        this.wayPoints = PathData.CalcPath(currentPos, destinationPos);
+        return this.wayPoints;
     }
 }

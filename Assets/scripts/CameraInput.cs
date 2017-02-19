@@ -43,6 +43,7 @@ public class CameraInput : MonoBehaviour {
     private void MoveCam(Vector3 dir)
     {
         this.transform.Translate(dir * this.camSpeed * Time.deltaTime);
+        return;
     }
 
     /// <summary>
@@ -53,5 +54,6 @@ public class CameraInput : MonoBehaviour {
         Vector3 worldPoint = Camera.main.ViewportToWorldPoint(new Vector3(1.0f, 0.0f));
         this.xMax = maxTile.x - worldPoint.x;
         this.yMin = maxTile.y - worldPoint.y;
+        return;
     }
 }

@@ -63,7 +63,13 @@ public static class PathData
                             if (Math.Abs(x - y) == 1)
                                 costToMove = 10;        //up, down, forward, back
                             else
+                            {
+                                //if (LevelGenerator.Instance.tilesWithTower.ContainsKey(tmp))
+                                //    continue;
+                                if (!IgnoreDiagonalPath(currentNode, nodeData[tmp]))
+                                    continue;
                                 costToMove = 14;        //diagonal
+                            }
 
                             //get the possible node data from the dictionary
                             Node possibleNode = nodeData[tmp];
@@ -84,12 +90,6 @@ public static class PathData
                                 possibleNode.SetParent(currentNode);
                                 possibleNode.SetCost(costToMove, nodeData[destinationPos]);
                             }
-                            /************************DEBUG************************************/
-                            //Debug.Log("cost to Move" + possibleNode.costToMove);
-                            //Debug.Log("estimated cost" + possibleNode.estimatedCost);
-                            //Debug.Log("final cost" + possibleNode.finalCost);
-                            //Debug.Log(possibleNode.parent.gridPos.X);
-                            // Debug.Log(possibleNode.parent.gridPos.Y);
                         }
                     }
                 }
@@ -110,37 +110,23 @@ public static class PathData
                     shortestPath.Push(currentNode);
                     currentNode = currentNode.parent;
                     //Debug.Log(shortestPath.Peek().gridPos.X + " " + shortestPath.Peek().gridPos.Y);
-                    //Debug.Log(shortestPath.Peek().gridPos.Y);
                 }
                 break;
             }
-
-            //if (nodeIsClosed.Contains(currentNode))
-            //Debug.Log("current node is closed");
         }
         return shortestPath;
     }
+
+    private static bool IgnoreDiagonalPath(Node currentNode, Node neighbour)
+    {
+        GridPos direction = neighbour.gridPos - currentNode.gridPos;
+        GridPos a = new GridPos(currentNode.gridPos.X + direction.X, currentNode.gridPos.Y + direction.Y);
+        GridPos b = new GridPos(currentNode.gridPos.X, currentNode.gridPos.Y + direction.Y);
+
+        if (nodeData.ContainsKey(a) && !LevelGenerator.Instance.tiles[a].IsTowerPlaced)
+            return false;
+        if (nodeData.ContainsKey(b) && !LevelGenerator.Instance.tiles[b].IsTowerPlaced)
+            return false;
+        return true;
+    }
 }
-
-
-//if (currentNode == nodeData[destinationPos])
-//{
-//    List<Node> shortestPath = new List<Node>();
-//    while (currentNode.gridPos != spawnPos)
-//    {
-//        shortestPath.Add(currentNode);
-//        currentNode = currentNode.parent;
-//    }
-//    //shortestPath.Reverse();
-//    foreach(Node n in shortestPath)
-//    {
-//        Debug.Log(n.gridPos.X + " "+ n.gridPos.Y);
-//    }
-//    for(int i = 0; i < shortestPath.Count; i++)
-//    {
-//        Debug.Log(shortestPath.ElementAt(i).gridPos.X + " " + shortestPath.ElementAt(i).gridPos.Y);
-//    }
-//    if (shortestPath.Count > 0)
-//        Debug.Log(shortestPath.Count);
-//    break;
-//}

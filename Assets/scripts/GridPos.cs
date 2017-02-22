@@ -59,4 +59,9 @@
     {
         return 0;
     }
+
+    public static GridPos operator -(GridPos a, GridPos b)
+    {
+        return new GridPos(a.X - b.X, a.Y - b.Y);
+    }
 }

@@ -7,12 +7,19 @@ using UnityEngine.UI;
 public class GameHandler : Singleton<GameHandler>
 {
     public TowerUI selectedBtn { get; set; }
-
-    [SerializeField]
     private Text goldText;
+    private const string goldTextName = "GoldText";
 
     [SerializeField]
     private int gold;
+
+    private int waveCount;
+    private int creepsToSpawn;
+    private Text waveText;
+    private const string waveTextName = "WaveText";
+
+    [SerializeField]
+    private GameObject spawnCreepBtn;
 
     private int tmpGold;
     private Texture2D cursorTexture;
@@ -24,30 +31,19 @@ public class GameHandler : Singleton<GameHandler>
     [SerializeField]
     private List<GameObject> creepList;
 
+    [SerializeField]
+    private List<string> creepsInScene;
+    public bool CreepsInScene
+    {
+        get { return creepsInScene.Count > 0; }
+    }
+
     private string ranger;
     private string puck;
 
     private string creepType;
-    public string CreepType
-    {
-        get
-        {
-            return creepType;
-        }
-        set
-        {
-            creepType = value;
-        }
-    }
-
-    public List<Creep> creepObjects;
     private static System.Random random = new System.Random();
     private const string charToGet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    public Dictionary<string, Creep> creepInfo { get; private set; }
-
-    public List<string> creepNames;
-
-    public bool b { get; set; }
 
     private void Awake()
     {
@@ -57,7 +53,8 @@ public class GameHandler : Singleton<GameHandler>
         this.ranger = "ranger";
         this.puck = "puck";
 
-        this.creepInfo = new Dictionary<string, Creep>();
+        this.waveText = GameObject.Find(waveTextName).GetComponent<Text>();
+        this.goldText = GameObject.Find(goldTextName).GetComponent<Text>();
     }
 
     private void Start ()
@@ -74,6 +71,10 @@ public class GameHandler : Singleton<GameHandler>
         this.cursorMode = CursorMode.Auto;
 
         SetCustomCursor();
+
+        this.waveCount = 0;
+        this.creepsToSpawn = 0;
+        return;
     }
 	
 	
@@ -81,15 +82,6 @@ public class GameHandler : Singleton<GameHandler>
     {
         HandleKeyboard();
         GoldUsed();
-
-        //if (this.creepNames.Count > 0)
-        //{
-        //    for (int i = 0; i < this.creepNames.Count; i++)
-        //    {
-        //        Creep tmp = GameObject.Find(this.creepNames[i]).transform.GetComponent<Creep>();
-        //        tmp.FindWayPoints(LevelGenerator.Instance.CreateWayPoints(tmp.GridPos, LevelGenerator.Instance.DestinationPos), this.creepNames[i]);
-        //    }
-        //}
     }
 
     /// <summary>
@@ -103,7 +95,7 @@ public class GameHandler : Singleton<GameHandler>
         {
             this.selectedBtn = towerUI;
             MouseIcon.Instance.GetSprite(towerUI.Sprite);
-            //Debug.Log(towerUI.GoldToBuildTwr);
+            return;
         }
     }
     /// <summary>
@@ -116,6 +108,7 @@ public class GameHandler : Singleton<GameHandler>
 
         //disable sprite renderer on the mouse
         MouseIcon.Instance.DisableRenderer();
+        return;
     }
 
     /// <summary>
@@ -125,6 +118,7 @@ public class GameHandler : Singleton<GameHandler>
     {
         if (Input.GetKeyDown(KeyCode.F))
             MouseIcon.Instance.DisableRenderer();
+        return;
     }
 
     /// <summary>
@@ -137,6 +131,7 @@ public class GameHandler : Singleton<GameHandler>
         {
             this.goldText.text = this.gold.ToString();
             this.tmpGold = this.gold;
+            return;
         }
     }
 
@@ -154,7 +149,11 @@ public class GameHandler : Singleton<GameHandler>
     /// </summary>
     public void SpawnCreeps()
     {
+        this.waveCount++;
+        this.creepsToSpawn = this.waveCount * 5;
+        this.waveText.text = this.waveCount.ToString();
         StartCoroutine(CreateCreep());
+        this.spawnCreepBtn.SetActive(false);
     }
 
     /// <summary>
@@ -163,27 +162,26 @@ public class GameHandler : Singleton<GameHandler>
     /// <returns></returns>
     private IEnumerator CreateCreep()
     {
-        LevelGenerator.Instance.CreateWayPoints(LevelGenerator.Instance.SpawnPos, LevelGenerator.Instance.DestinationPos);
-        int creepIndex = Random.Range(0, 2);
-        creepType = string.Empty;
-        switch(creepIndex)
+        for (int i = 0; i < creepsToSpawn; i++)
         {
-            case 0:
-                creepType = this.ranger;
-                break;
-            case 1:
-                creepType = this.puck;
-                break;
+            LevelGenerator.Instance.CreateWayPoints(LevelGenerator.Instance.SpawnPos, LevelGenerator.Instance.DestinationPos);
+            int creepIndex = Random.Range(0, 2);
+            creepType = string.Empty;
+            switch (creepIndex)
+            {
+                case 0:
+                    creepType = this.ranger;
+                    break;
+                case 1:
+                    creepType = this.puck;
+                    break;
+            }
+            Creep creep = GetCreepType(creepType).GetComponent<Creep>();
+            creep.name = RandomString(4);
+            this.creepsInScene.Add(creep.name);
+            creep.Spawn();
+            yield return new WaitForSeconds(1.0f);
         }
-        Creep creep = GetType(creepType).GetComponent<Creep>();
-        creep.name = RandomString(4);
-        creep.Spawn();
-        creepNames.Add(creep.name);
-        //creepObjects.Add(creep);
-        //this.creepInfo.Add(creep.name, creep);
-        //Debug.Log(creep.name);
-
-        yield return new WaitForSeconds(1.0f);
     }
 
     /// <summary>
@@ -191,22 +189,38 @@ public class GameHandler : Singleton<GameHandler>
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    private GameObject GetType(string type)
+    private GameObject GetCreepType(string type)
     {
         for (int i = 0; i < creepList.Count; i++)
         {
             if(creepList[i].name == type)
             {
-                GameObject tmpObj = Instantiate(creepList[i]);
-                tmpObj.name = type;
-                return tmpObj;
+                GameObject creepObj = Instantiate(creepList[i]);
+                creepObj.name = type;
+                return creepObj;
             }
         }
         return null;
     }
 
+    /// <summary>
+    /// creates a unique string 
+    /// </summary>
+    /// <param name="length"></param>
+    /// <returns>random string of specified size</returns>
     private static string RandomString(int length)
     {
         return new string(Enumerable.Repeat(charToGet, length).Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+
+    /// <summary>
+    /// removes the creep from list
+    /// </summary>
+    /// <param name="creepName"></param>
+    public void RemoveFromScene(string creepName)
+    {
+        this.creepsInScene.Remove(creepName);
+        if (!this.CreepsInScene)
+            this.spawnCreepBtn.SetActive(true);
     }
 }

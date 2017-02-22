@@ -10,9 +10,10 @@ public class CameraInput : MonoBehaviour {
     private float xMax;
     private float yMin;
 
-	void Start ()
+	private void Start ()
     {
-		
+        this.xMax = 0;
+        this.yMin = 0;
 	}
 	
 	private void Update ()

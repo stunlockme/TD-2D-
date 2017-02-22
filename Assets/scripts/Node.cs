@@ -5,7 +5,7 @@ using System;
 
 public class Node
 {
-    public GridPos gridPos { get; set; }
+    public GridPos gridPos { get; private set; }
     public TileData tileData { get; set; }
     public Node parent { get; set; }
 
@@ -26,6 +26,7 @@ public class Node
         this.tileData = tileData;
         this.gridPos = tileData.gridPosition;
         this.worldPos = tileData.centreOfTile;
+        return;
     }
 
     /// <summary>
@@ -35,12 +36,21 @@ public class Node
     public void SetParent(Node parent)
     {
         this.parent = parent;
+        return;
     }
 
+    /// <summary>
+    /// sets the cost to move to node
+    /// sets the estimated cost to reach destination from this node
+    /// sets the final cost as a sum of above costs
+    /// </summary>
+    /// <param name="costToMove"></param>
+    /// <param name="destination"></param>
     public void SetCost(int costToMove, Node destination)
     {
         this.costToMove = this.parent.costToMove + costToMove;
         this.estimatedCost = ((Math.Abs(gridPos.X - destination.gridPos.X)) + Math.Abs((gridPos.Y - destination.gridPos.Y))) * this.toConvert;
         this.finalCost = this.costToMove + this.estimatedCost;
+        return;
     }
 }

@@ -50,6 +50,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private GridPos spawnPos;
     private GridPos destinationPos;
     public Dictionary<GridPos, TileData> tiles { get; set; }
+    //public Dictionary<GridPos, TileData> tilesWithTower { get; set; }
     private float tileSizeX;
     private float tileSizeY;
     private TileData tmpTile;
@@ -91,6 +92,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         //initialize dictionary 
         this.tiles = new Dictionary<GridPos, TileData>();
+
+        //this.tilesWithTower = new Dictionary<GridPos, TileData>();
 
         //set spawn and end point of creeps
         this.spawnPos = new GridPos((int)this.spawnPoint.x, (int)this.spawnPoint.y);
@@ -178,34 +181,33 @@ public class LevelGenerator : Singleton<LevelGenerator>
             {
                 int x = 0;
                 gridPos = new GridPos(x, y);
-                this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
+                this.tiles[gridPos].IsTowerPlaced = true;
             }
             for (int y = 2; y < mapY; y++)
             {
                 int x = mapX - 2;
                 gridPos = new GridPos(x, y);
-                this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
+                this.tiles[gridPos].IsTowerPlaced = true;
             }
             for (int x = 0; x < mapX - 1; x++)
             {
                 int y = 0;
                 gridPos = new GridPos(x, y);
-                this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
+                this.tiles[gridPos].IsTowerPlaced = true;
             }
             for (int x = 1; x < mapX - 1; x++)
             {
                 int y = mapY - 1;
                 gridPos = new GridPos(x, y);
-                //Debug.Log(gridPos.X + "" + gridPos.Y);
-                this.tiles[gridPos].GetComponent<TileData>().IsTowerPlaced = true;
+                this.tiles[gridPos].IsTowerPlaced = true;
             }
             gridPos = new GridPos((int)this.spawnPoint.x + 1, (int)this.spawnPoint.y);
-            this.tiles[gridPos].GetComponent<TileData>().SpecialCase = true;
-            this.tiles[this.destinationPos].GetComponent<TileData>().SpecialCase = true;
-            this.tiles[this.spawnPos].GetComponent<TileData>().IsTowerPlaced = false;
-            this.tiles[this.spawnPos].GetComponent<TileData>().SpecialCase = true;
+            this.tiles[gridPos].SpecialCase = true;
+            this.tiles[this.destinationPos].SpecialCase = true;
+            this.tiles[this.spawnPos].IsTowerPlaced = false;
+            this.tiles[this.spawnPos].SpecialCase = true;
             gridPos = new GridPos((int)this.destroyPoint.x - 1, (int)this.destroyPoint.y);
-            this.tiles[gridPos].GetComponent<TileData>().SpecialCase = true;
+            this.tiles[gridPos].SpecialCase = true;
         }
         return;
     }

@@ -13,8 +13,6 @@ public class Creep : MonoBehaviour
         get { return gridPos; }
         private set { ;}
     }
-    [SerializeField]
-    private bool once = false;
     private float timer;
     private const string parentName = "CreepObjects";
     private float timeToDestroy;
@@ -24,7 +22,7 @@ public class Creep : MonoBehaviour
     {
         this.speed = 5.0f;
         this.timer = 0;
-        this.timeToDestroy = 3.0f;
+        this.timeToDestroy = 1.0f;
         this.parent = GameObject.FindGameObjectWithTag(parentName);
         this.transform.SetParent(this.parent.transform);
         //this.tmpWayPoints = new Stack<Node>();
@@ -102,6 +100,7 @@ public class Creep : MonoBehaviour
     private IEnumerator DestroyObj(float timeToDestroy)
     {
         yield return new WaitForSeconds(timeToDestroy);
+        GameHandler.Instance.RemoveFromScene(this.name);
         Destroy(this.gameObject);
     }
 
@@ -117,6 +116,7 @@ public class Creep : MonoBehaviour
         {
             this.wayPoints = PathData.CalcPath(this.gridPos, LevelGenerator.Instance.DestinationPos);
             this.timer = 0;
+            return;
         }
     }
 }

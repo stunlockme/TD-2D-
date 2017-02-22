@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class TileData : MonoBehaviour
 {
     //position of tile in the grid
-    public GridPos gridPosition { get; set; }
+    public GridPos gridPosition { get; private set; }
 
     //centre of tile in world space
     public Vector2 centreOfTile
@@ -135,7 +135,12 @@ public class TileData : MonoBehaviour
         this.towerRef.transform.SetParent(this.transform);
         this.isTowerPlaced = true;
         this.spriteRenderer.color = Color.white;
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y - 1)].specialCase = true;
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = true;
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].specialCase = true;
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].specialCase = true;
         GameHandler.Instance.ResetTower();
+           
         return;
     }
 }

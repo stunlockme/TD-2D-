@@ -43,7 +43,7 @@ public class TileData : MonoBehaviour
             specialCase = value;
         }
     }
-
+    private TowerRange towerRange;
     private List<Color32> colorList;
 
     private void Awake()
@@ -114,6 +114,19 @@ public class TileData : MonoBehaviour
             else if (Input.GetMouseButtonDown(0))
                 SpawnTower();
         }
+        else if(!EventSystem.current.IsPointerOverGameObject() && GameHandler.Instance.selectedBtn == null && Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("called");
+            if(this.towerRange != null)
+            {
+                Debug.Log("tower range is not null");
+                GameHandler.Instance.ChooseTowerRange(this.towerRange);
+            }
+            else
+            {
+                GameHandler.Instance.RemoveTowerRange();
+            }
+        }
     }
 
     /// <summary>
@@ -133,14 +146,14 @@ public class TileData : MonoBehaviour
         this.towerRef = Instantiate(GameHandler.Instance.selectedBtn.TowerPrefab, this.transform.position, Quaternion.identity);
         this.towerRef.GetComponent<SpriteRenderer>().sortingOrder = this.gridPosition.Y;
         this.towerRef.transform.SetParent(this.transform);
+        this.towerRange = this.towerRef.transform.GetChild(0).GetComponent<TowerRange>();
         this.isTowerPlaced = true;
         this.spriteRenderer.color = Color.white;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y - 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].specialCase = true;
-        GameHandler.Instance.ResetTower();
-           
+        GameHandler.Instance.ResetTower();  
         return;
     }
 }

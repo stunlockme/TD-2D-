@@ -86,6 +86,7 @@
     <Compile Include="Assets\scripts\PathData.cs" />
     <Compile Include="Assets\scripts\Singleton.cs" />
     <Compile Include="Assets\scripts\TileData.cs" />
+    <Compile Include="Assets\scripts\TowerRange.cs" />
     <Compile Include="Assets\scripts\TowerUI.cs" />
   </ItemGroup>
   <ItemGroup>

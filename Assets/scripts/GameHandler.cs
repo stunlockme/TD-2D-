@@ -44,6 +44,7 @@ public class GameHandler : Singleton<GameHandler>
     private string creepType;
     private static System.Random random = new System.Random();
     private const string charToGet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private TowerRange towerRange;
 
     private void Awake()
     {
@@ -222,5 +223,21 @@ public class GameHandler : Singleton<GameHandler>
         this.creepsInScene.Remove(creepName);
         if (!this.CreepsInScene)
             this.spawnCreepBtn.SetActive(true);
+    }
+
+    public void ChooseTowerRange(TowerRange towerRange)
+    {
+        if (this.towerRange != null)
+            this.towerRange.ActivateRange();
+        this.towerRange = towerRange;
+        this.towerRange.ActivateRange();
+    }
+
+    public void RemoveTowerRange()
+    {
+        if (this.towerRange != null)
+            this.towerRange.ActivateRange();
+
+        this.towerRange = null;
     }
 }

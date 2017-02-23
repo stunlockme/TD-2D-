@@ -5,6 +5,7 @@ using UnityEngine;
 public class MouseIcon : Singleton<MouseIcon>
 {
     private SpriteRenderer spriteRenderer;
+    private SpriteRenderer towerRangeRenderer;
     private Camera cam;
     [SerializeField]
     private GameObject towerButtons;
@@ -16,6 +17,8 @@ public class MouseIcon : Singleton<MouseIcon>
 
         //initialize the camera
         this.cam = FindObjectOfType<Camera>();
+
+        this.towerRangeRenderer = this.transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -47,6 +50,8 @@ public class MouseIcon : Singleton<MouseIcon>
         //get the sprite from the game handler class
         this.spriteRenderer.sprite = sprite;
 
+        this.towerRangeRenderer.enabled = true;
+
         //enable sprite renderer
         this.spriteRenderer.enabled = true;
         return;
@@ -63,6 +68,8 @@ public class MouseIcon : Singleton<MouseIcon>
 
         //set the sprite to null
         this.spriteRenderer.sprite = null;
+
+        this.towerRangeRenderer.enabled = false;
 
         //set user interface object to null
         GameHandler.Instance.selectedBtn = null;

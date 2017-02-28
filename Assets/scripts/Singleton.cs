@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    //create a generic data type, where the type inherits from monobehaviour
+    //create a generic data type where the type inherits from monobehaviour
     private static T instance;
 
     //create a empty readonly object

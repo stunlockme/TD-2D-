@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraInput : MonoBehaviour {
-
-    [SerializeField]
+public class CameraInput : MonoBehaviour
+{
     private float camSpeed;
-
     private float xMax;
     private float yMin;
 
+    private float zoomSpeed;
+    private float targetOrtho;
+    private float smoothSpeed;
+    private float minOrtho;
+    private float maxOrtho;
+
 	private void Start ()
     {
+        this.camSpeed = 5.0f;
         this.xMax = 0;
         this.yMin = 0;
+        this.targetOrtho = Camera.main.orthographicSize;
+        this.zoomSpeed = 5.0f;
+        this.smoothSpeed = 10.0f;
+        this.minOrtho = 1.0f;
+        this.maxOrtho = 20.0f;
 	}
 	
 	private void Update ()
@@ -21,6 +31,7 @@ public class CameraInput : MonoBehaviour {
         PlayerInput();
 
         this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, 0, this.xMax), Mathf.Clamp(this.transform.position.y, this.yMin, 0), -10.0f);
+        Zoom();
 	}
 
     /// <summary>
@@ -56,5 +67,16 @@ public class CameraInput : MonoBehaviour {
         this.xMax = maxTile.x - worldPoint.x;
         this.yMin = maxTile.y - worldPoint.y;
         return;
+    }
+
+    private void Zoom()
+    {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if(scroll != 0.0f)
+        {
+            targetOrtho -= scroll * zoomSpeed;
+            targetOrtho = Mathf.Clamp(targetOrtho, minOrtho, maxOrtho);
+        }
+        Camera.main.orthographicSize = Mathf.MoveTowards(Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
     }
 }

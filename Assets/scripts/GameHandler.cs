@@ -225,6 +225,10 @@ public class GameHandler : Singleton<GameHandler>
             this.spawnCreepBtn.SetActive(true);
     }
 
+    /// <summary>
+    /// choose the tower range
+    /// </summary>
+    /// <param name="towerRange"></param>
     public void ChooseTowerRange(TowerRange towerRange)
     {
         if (this.towerRange != null)
@@ -233,6 +237,9 @@ public class GameHandler : Singleton<GameHandler>
         this.towerRange.ActivateRange();
     }
 
+    /// <summary>
+    /// de-selects the tower range
+    /// </summary>
     public void RemoveTowerRange()
     {
         if (this.towerRange != null)

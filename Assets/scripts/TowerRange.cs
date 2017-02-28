@@ -17,6 +17,9 @@ public class TowerRange : MonoBehaviour {
 		
 	}
 
+    /// <summary>
+    /// activate or de-activate the renderer
+    /// </summary>
     public void ActivateRange()
     {
         this.spriteRenderer.enabled = !this.spriteRenderer.enabled;

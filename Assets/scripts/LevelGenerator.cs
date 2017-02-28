@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class LevelGenerator : Singleton<LevelGenerator>
@@ -48,7 +49,15 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private List<string> mapList;
 
     private GridPos spawnPos;
+    public GridPos SpawnPos
+    {
+        get { return spawnPos; }
+    }
     private GridPos destinationPos;
+    public GridPos DestinationPos
+    {
+        get { return destinationPos; }
+    }
     public Dictionary<GridPos, TileData> tiles { get; set; }
     //public Dictionary<GridPos, TileData> tilesWithTower { get; set; }
     private float tileSizeX;
@@ -68,21 +77,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         }
     }
 
-    public GridPos SpawnPos
-    {
-        get
-        {
-            return spawnPos;
-        }
-    }
-
-    public GridPos DestinationPos
-    {
-        get
-        {
-            return destinationPos;
-        }
-    }
+    private char[] charArr = { 'a', 'b', 'c' };
 
     private void Awake()
     {
@@ -92,8 +87,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         //initialize dictionary 
         this.tiles = new Dictionary<GridPos, TileData>();
-
-        //this.tilesWithTower = new Dictionary<GridPos, TileData>();
 
         //set spawn and end point of creeps
         this.spawnPos = new GridPos((int)this.spawnPoint.x, (int)this.spawnPoint.y);
@@ -122,11 +115,14 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         //get number of characters in each row
         int mapX = mapResource[0].ToCharArray().Length;
-
+        //Debug.Log(mapX);
         //get number of rows
         int mapY = mapResource.Length;
-
+        //Debug.Log(mapY);
         Vector3 maxTile = Vector3.zero;
+        //mapResource[1].Replace(' ', ',');
+        //Debug.Log(mapResource[1].Replace(' ', ','));
+        Debug.Log(mapResource[1]);
 
         //get camera top left corner in world space
         Vector3 topLeftWorld = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
@@ -135,17 +131,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
         for (int y = 0; y < mapY; y++)
         {
             char[] tileTypes = mapResource[y].ToCharArray();
-            char[] tmpChar = new char[2];
-            tmpChar[0] = tileTypes[mapX - 2];
-            tmpChar[1] = tileTypes[mapX - 1];
-            string s = new string(tmpChar);
-
             for (int x = 0; x < mapX; x++)
             {
-                if (x < 10)
-                    SpawnTile(tileTypes[x].ToString(), x, y, topLeftWorld);
-                else
-                    SpawnTile(s, x, y, topLeftWorld);
+                SpawnTile(tileTypes[x].ToString(), x, y, topLeftWorld);
             }
         }
 
@@ -159,20 +147,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         SpawnPoints();
 
-        //disable the last coloumn of tiles
-        for (int y = 0; y < 8; y++)
-        {
-            int x = mapX - 1;
-            GridPos lastTile = new GridPos(x, y);
-
-            if(this.tiles.ContainsKey(lastTile))
-            {
-                this.tiles[lastTile].transform.gameObject.SetActive(false);
-                this.tiles.Remove(lastTile);
-                //Destroy(this.tiles[lastTile].transform.gameObject);
-            }
-        }
-
         //set the map border not able to place towers
         if (mapType == this.mapList[0])
         {
@@ -185,11 +159,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
             }
             for (int y = 2; y < mapY; y++)
             {
-                int x = mapX - 2;
+                int x = mapX - 1;
                 gridPos = new GridPos(x, y);
                 this.tiles[gridPos].IsTowerPlaced = true;
             }
-            for (int x = 0; x < mapX - 1; x++)
+            for (int x = 0; x < mapX; x++)
             {
                 int y = 0;
                 gridPos = new GridPos(x, y);
@@ -221,6 +195,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
     /// <param name="topLeftWorld"></param>
     private void SpawnTile(string tileType, int x, int y, Vector3 topLeftWorld)
     {
+        if (tileType == this.charArr[0].ToString())
+            tileType = "10";
         //store tile type as an int
         int tileIndex = int.Parse(tileType);
         //TileData tmpTile = Instantiate(tilePrefabs[tileIndex]).GetComponent<TileData>();

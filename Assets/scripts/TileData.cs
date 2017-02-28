@@ -116,10 +116,8 @@ public class TileData : MonoBehaviour
         }
         else if(!EventSystem.current.IsPointerOverGameObject() && GameHandler.Instance.selectedBtn == null && Input.GetMouseButtonDown(0))
         {
-            Debug.Log("called");
             if(this.towerRange != null)
             {
-                Debug.Log("tower range is not null");
                 GameHandler.Instance.ChooseTowerRange(this.towerRange);
             }
             else

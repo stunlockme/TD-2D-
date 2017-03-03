@@ -13,6 +13,7 @@ public class Creep : MonoBehaviour
         get { return gridPos; }
         private set { ;}
     }
+
     private float timer;
     private const string parentName = "CreepObjects";
     private float timeToDestroy;
@@ -20,9 +21,9 @@ public class Creep : MonoBehaviour
 
     private void Start()
     {
-        this.speed = 5.0f;
+        this.speed = 1.0f;
         this.timer = 0;
-        this.timeToDestroy = 1.0f;
+        this.timeToDestroy = 2.5f;
         this.parent = GameObject.FindGameObjectWithTag(parentName);
         this.transform.SetParent(this.parent.transform);
         //this.tmpWayPoints = new Stack<Node>();
@@ -35,7 +36,7 @@ public class Creep : MonoBehaviour
         if (this.wayPoints != null)
             MoveToDestination();
 
-        WaitToCalWayPoints(1.0f);
+        WaitToCalWayPoints(2.0f);
     }
 
     /// <summary>

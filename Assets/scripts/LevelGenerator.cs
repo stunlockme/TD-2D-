@@ -59,7 +59,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
         get { return destinationPos; }
     }
     public Dictionary<GridPos, TileData> tiles { get; set; }
-    //public Dictionary<GridPos, TileData> tilesWithTower { get; set; }
     private float tileSizeX;
     private float tileSizeY;
     private TileData tmpTile;
@@ -141,9 +140,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         maxTile = tiles[new GridPos(mapX - 1, mapY - 1)].transform.position;
 
         //restrict camera to bounds of the map
-        //this.cameraInput.RestrictCamera(new Vector3(this.tileSizeX + maxTile.x, maxTile.y - this.tileSizeY));
-
-        this.cameraInput.RestrictCamera(new Vector3(maxTile.x, maxTile.y - this.tileSizeY));
+        this.cameraInput.RestrictCamera(new Vector3(this.tileSizeX + maxTile.x, maxTile.y - this.tileSizeY));
 
         SpawnPoints();
 
@@ -244,7 +241,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private void SpawnPoints()
     {
         //create the starting point of creeps
-        GameObject tmp = (GameObject)Instantiate(this.startPos, this.tiles[this.spawnPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
+        GameObject tmp = Instantiate(this.startPos, this.tiles[this.spawnPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
         this.creepGate = tmp.GetComponent<CreepGate>();
 
         //create the end point of creeps

@@ -189,7 +189,7 @@ public class GameHandler : Singleton<GameHandler>
     /// loop through the creep list to find the creep type
     /// </summary>
     /// <param name="type"></param>
-    /// <returns></returns>
+    /// <returns>creep object if type exists in the creep list</returns>
     private GameObject GetCreepType(string type)
     {
         for (int i = 0; i < creepList.Count; i++)
@@ -197,7 +197,7 @@ public class GameHandler : Singleton<GameHandler>
             if(creepList[i].name == type)
             {
                 GameObject creepObj = Instantiate(creepList[i]);
-                creepObj.name = type;
+                //creepObj.name = type;
                 return creepObj;
             }
         }

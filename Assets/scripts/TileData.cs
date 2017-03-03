@@ -43,6 +43,7 @@ public class TileData : MonoBehaviour
             specialCase = value;
         }
     }
+
     private TowerRange towerRange;
     private List<Color32> colorList;
 
@@ -86,16 +87,6 @@ public class TileData : MonoBehaviour
             //add tile to dictionary with grid info
             LevelGenerator.Instance.tiles.Add(gridPos, this);
         }
-
-        /****************** Debug *******************/
-        //try
-        //{
-        //    LevelGenerator.Instance.tiles.Add(gridPos, this);
-        //}
-        //catch(Exception e)
-        //{
-        //    throw e;
-        //}
     }
 
     /// <summary>
@@ -117,13 +108,9 @@ public class TileData : MonoBehaviour
         else if(!EventSystem.current.IsPointerOverGameObject() && GameHandler.Instance.selectedBtn == null && Input.GetMouseButtonDown(0))
         {
             if(this.towerRange != null)
-            {
                 GameHandler.Instance.ChooseTowerRange(this.towerRange);
-            }
             else
-            {
                 GameHandler.Instance.RemoveTowerRange();
-            }
         }
     }
 
@@ -151,6 +138,20 @@ public class TileData : MonoBehaviour
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].specialCase = true;
+        //if(this.gridPosition.Y == 3)
+        //{
+        //    if(LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y - 1)].IsTowerPlaced && LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 1)].IsTowerPlaced)
+        //    {
+        //        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 2)].SpecialCase = true;
+        //    }
+        //}
+        //if (this.gridPosition.Y == 2)
+        //{
+        //    if (LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 1)].IsTowerPlaced && LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 2)].IsTowerPlaced)
+        //    {
+        //        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 3)].SpecialCase = true;
+        //    }
+        //}
         GameHandler.Instance.ResetTower();  
         return;
     }

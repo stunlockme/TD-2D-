@@ -18,6 +18,11 @@ public class Creep : MonoBehaviour
     private const string parentName = "CreepObjects";
     private float timeToDestroy;
     private GameObject parent;
+    private bool isDead;
+    public bool IsDead
+    {
+        get { return isDead; }
+    }
 
     private void Start()
     {
@@ -26,9 +31,7 @@ public class Creep : MonoBehaviour
         this.timeToDestroy = 2.5f;
         this.parent = GameObject.FindGameObjectWithTag(parentName);
         this.transform.SetParent(this.parent.transform);
-        //this.tmpWayPoints = new Stack<Node>();
-        //Debug.Log(this.gridPos.X + " " + this.gridPos.Y);
-        //Debug.Log(this.name);
+        this.isDead = false;
     }
 
     private void Update()
@@ -36,7 +39,21 @@ public class Creep : MonoBehaviour
         if (this.wayPoints != null)
             MoveToDestination();
 
+        //foreach(TileData td in LevelGenerator.Instance.tiles.Values)
+        //{
+        //    if(td.B)
+        //    {
+        //        this.wayPoints = PathData.CalcPath(this.gridPos, LevelGenerator.Instance.DestinationPos);
+        //        StartCoroutine(WaitForAllCreeps(td));
+        //    }
+        //}
         WaitToCalWayPoints(2.0f);
+    }
+
+    private IEnumerator WaitForAllCreeps(TileData td)
+    {
+        yield return new WaitForSeconds(1.0f);
+        td.B = false;
     }
 
     /// <summary>
@@ -101,6 +118,8 @@ public class Creep : MonoBehaviour
     private IEnumerator DestroyObj(float timeToDestroy)
     {
         yield return new WaitForSeconds(timeToDestroy);
+        this.isDead = true;
+        yield return new WaitForSeconds(0.2f);
         GameHandler.Instance.RemoveFromScene(this.name);
         Destroy(this.gameObject);
     }

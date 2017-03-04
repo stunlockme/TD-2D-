@@ -33,7 +33,11 @@ public class GameHandler : Singleton<GameHandler>
 
     [SerializeField]
     private List<string> creepsInScene;
-    public bool CreepsInScene
+    public List<string> CreepsInScene
+    {
+        get { return creepsInScene; }
+    }
+    public bool CreepCountInScene
     {
         get { return creepsInScene.Count > 0; }
     }
@@ -45,6 +49,9 @@ public class GameHandler : Singleton<GameHandler>
     private static System.Random random = new System.Random();
     private const string charToGet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private TowerRange towerRange;
+
+    [SerializeField]
+    private List<GameObject> towerProjectileList;
 
     private void Awake()
     {
@@ -204,6 +211,19 @@ public class GameHandler : Singleton<GameHandler>
         return null;
     }
 
+    public GameObject GetTowerProjectileType(string type)
+    {
+        for (int i = 0; i < towerProjectileList.Count; i++)
+        {
+            if(towerProjectileList[i].name == type)
+            {
+                GameObject tp = Instantiate(towerProjectileList[i]);
+                return tp;
+            }
+        }
+        return null;
+    }
+
     /// <summary>
     /// creates a unique string 
     /// </summary>
@@ -221,7 +241,7 @@ public class GameHandler : Singleton<GameHandler>
     public void RemoveFromScene(string creepName)
     {
         this.creepsInScene.Remove(creepName);
-        if (!this.CreepsInScene)
+        if (!this.CreepCountInScene)
             this.spawnCreepBtn.SetActive(true);
     }
 

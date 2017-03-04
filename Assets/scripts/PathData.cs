@@ -24,8 +24,8 @@ public static class PathData
     /// <summary>
     /// calculates the shortest path to destination
     /// </summary>
-    /// <param name="spawnPos"></param>
-    public static Stack<Node> CalcPath(GridPos spawnPos, GridPos destinationPos)
+    /// <param name="currentPos"></param>
+    public static Stack<Node> CalcPath(GridPos currentPos, GridPos destinationPos)
     {
         //null check the node dictionary
         if (nodeData == null)
@@ -38,7 +38,7 @@ public static class PathData
         Stack<Node> shortestPath = new Stack<Node>();
 
         //set the start of search to the creep spawn position
-        Node currentNode = nodeData[spawnPos];
+        Node currentNode = nodeData[currentPos];
 
         //add node to the open set
         nodeIsOpen.Add(currentNode);
@@ -66,9 +66,9 @@ public static class PathData
                             {
                                 //if (LevelGenerator.Instance.tilesWithTower.ContainsKey(tmp))
                                 //    continue;
-                                if (!IgnoreDiagonalPath(currentNode, nodeData[tmp]))
-                                    continue;
-                                costToMove = 14;        //diagonal
+                                //if (!IgnoreDiagonalPath(currentNode, nodeData[tmp]))
+                                continue;
+                                //costToMove = 14;        //diagonal
                             }
 
                             //get the possible node data from the dictionary
@@ -105,7 +105,7 @@ public static class PathData
 
             if (currentNode == nodeData[destinationPos])
             {
-                while (currentNode.gridPos != spawnPos)
+                while (currentNode.gridPos != currentPos)
                 {
                     shortestPath.Push(currentNode);
                     currentNode = currentNode.parent;

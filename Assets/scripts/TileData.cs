@@ -44,6 +44,20 @@ public class TileData : MonoBehaviour
         }
     }
 
+    private bool b = false;
+    public bool B
+    {
+        get
+        {
+            return b;
+        }
+
+        set
+        {
+            b = value;
+        }
+    }
+
     private TowerRange towerRange;
     private List<Color32> colorList;
 
@@ -133,6 +147,7 @@ public class TileData : MonoBehaviour
         this.towerRef.transform.SetParent(this.transform);
         this.towerRange = this.towerRef.transform.GetChild(0).GetComponent<TowerRange>();
         this.isTowerPlaced = true;
+        this.b = true;
         this.spriteRenderer.color = Color.white;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y - 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = true;

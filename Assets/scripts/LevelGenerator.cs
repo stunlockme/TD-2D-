@@ -87,6 +87,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         this.destinationPos = new GridPos((int)this.destroyPoint.x, (int)this.destroyPoint.y);
 
         this.cameraInput = Camera.main.GetComponent<CameraInput>();
+        return;
     }
 
     private void Start ()
@@ -257,8 +258,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
     {
         if(mapRow != null)
         {
-            GameObject tmp = Resources.Load(prefabName, typeof(GameObject)) as GameObject;
-            mapRow.Add(tmp);
+            GameObject tilePrefab = Resources.Load(prefabName, typeof(GameObject)) as GameObject;
+            mapRow.Add(tilePrefab);
+            return;
         }
     }
 

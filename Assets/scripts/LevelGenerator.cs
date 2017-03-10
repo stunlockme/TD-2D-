@@ -119,7 +119,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         Vector3 maxTile = Vector3.zero;
         //mapResource[1].Replace(' ', ',');
         //Debug.Log(mapResource[1].Replace(' ', ','));
-        Debug.Log(mapResource[1]);
+        //Debug.Log(mapResource[1]);
 
         //get camera top left corner in world space
         Vector3 topLeftWorld = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));

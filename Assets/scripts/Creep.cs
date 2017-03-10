@@ -37,16 +37,11 @@ public class Creep : MonoBehaviour
     private void Update()
     {
         if (this.wayPoints != null)
+        {
             MoveToDestination();
+            Debug.Log("moving ? ");
+        }
 
-        //foreach(TileData td in LevelGenerator.Instance.tiles.Values)
-        //{
-        //    if(td.B)
-        //    {
-        //        this.wayPoints = PathData.CalcPath(this.gridPos, LevelGenerator.Instance.DestinationPos);
-        //        StartCoroutine(WaitForAllCreeps(td));
-        //    }
-        //}
         WaitToCalWayPoints(2.0f);
     }
 

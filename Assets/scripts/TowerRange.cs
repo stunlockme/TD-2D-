@@ -39,7 +39,6 @@ public class TowerRange : MonoBehaviour {
 	private void Update ()
     {
         Attack();
-        Debug.Log(this.creepTarget);
 	}
 
     /// <summary>

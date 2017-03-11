@@ -38,7 +38,7 @@ public class Stat
         }
     }
 
-    public void Initialize()
+    public void Init()
     {
         this.MaxVal = maxVal;
         this.CurrentVal = currentVal;

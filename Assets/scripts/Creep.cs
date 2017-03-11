@@ -24,6 +24,14 @@ public class Creep : MonoBehaviour
         get { return isDead; }
     }
 
+    [SerializeField]
+    private Stat health;
+
+    private void Awake()
+    {
+        health.Init();
+    }
+
     private void Start()
     {
         this.speed = 1.0f;
@@ -40,6 +48,11 @@ public class Creep : MonoBehaviour
         {
             MoveToDestination();
             Debug.Log("moving ? ");
+        }
+
+        if(this.health.CurrentVal == 0)
+        {
+            StartCoroutine(DestroyObj(0));
         }
 
         WaitToCalWayPoints(2.0f);
@@ -131,6 +144,16 @@ public class Creep : MonoBehaviour
         {
             this.wayPoints = PathData.CalcPath(this.gridPos, LevelGenerator.Instance.DestinationPos);
             this.timer = 0;
+            return;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Projectile")
+        {
+            TowerProjectile tp = collision.GetComponent<TowerProjectile>();
+            this.health.CurrentVal -= tp.Damage;
             return;
         }
     }

@@ -8,7 +8,15 @@ public class TowerProjectile : MonoBehaviour {
     private Creep creepTarget;
     private TowerRange towerRange;
     private const string projectileObjects = "ProjectileObjects";
+    private const string creep = "Creep";
     private GameObject parent;
+
+    [SerializeField]
+    private int damage;
+    public int Damage
+    {
+        get { return damage; }
+    }
 
     private void Awake()
     {
@@ -39,7 +47,13 @@ public class TowerProjectile : MonoBehaviour {
             this.transform.position = Vector2.MoveTowards(this.transform.position, this.creepTarget.transform.position, this.towerRange.ProjectileSpeed * Time.deltaTime);
         else if (this.creepTarget.IsDead)
             DestroyObj();
-    } 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == creep)
+            DestroyObj();
+    }
 
     private void DestroyObj()
     {

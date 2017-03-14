@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class TowerRange : MonoBehaviour {
@@ -28,6 +29,16 @@ public class TowerRange : MonoBehaviour {
 
     private float timer;
     private bool attackIsActive;
+
+    [SerializeField]
+    private GameObject sellCanvas;
+    public GameObject SellCanvas
+    { get { return sellCanvas; } }
+
+    [SerializeField]
+    private int towerPrice;
+    public int TowerPrice
+    { get { return towerPrice; } }
 	
 	private void Start ()
     {
@@ -39,7 +50,7 @@ public class TowerRange : MonoBehaviour {
 	private void Update ()
     {
         Attack();
-	}
+    }
 
     /// <summary>
     /// activate or de-activate the renderer
@@ -49,6 +60,10 @@ public class TowerRange : MonoBehaviour {
         this.spriteRenderer.enabled = !this.spriteRenderer.enabled;
     }
 
+    /// <summary>
+    /// attacks each creep based on a time delay
+    /// initializes the tower projectile
+    /// </summary>
     private void Attack()
     {
         if(!this.attackIsActive)
@@ -89,5 +104,11 @@ public class TowerRange : MonoBehaviour {
     {
         if (collision.tag == creepStr)
             this.creepTarget = null;
+    }
+
+    public void DisableSellBtn()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+            this.sellCanvas.SetActive(!this.sellCanvas.activeSelf);
     }
 }

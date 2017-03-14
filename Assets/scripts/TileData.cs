@@ -112,6 +112,8 @@ public class TileData : MonoBehaviour
             else
                 GameHandler.Instance.RemoveTowerRange();
         }
+        if(this.towerRange != null)
+            this.towerRange.DisableSellBtn();
     }
 
     /// <summary>
@@ -150,6 +152,19 @@ public class TileData : MonoBehaviour
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].specialCase = true;
+        return;
+    }
+
+    /// <summary>
+    /// set tiles to build towers after selling the tower
+    /// </summary>
+    public void UnLockDiagonalTiles()
+    {
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y)].IsTowerPlaced = false;
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y - 1)].specialCase = false;
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = false;
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].specialCase = false;
+        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].specialCase = false;
         return;
     }
 

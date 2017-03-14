@@ -15,12 +15,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private List<GameObject> tileR6;
 
     private CameraInput cameraInput;
-
-    [SerializeField]
-    private GameObject startPos;
-
-    [SerializeField]
-    private GameObject endPos;
+    private GameObject spawnGate;
+    private GameObject destinationGate;
 
     [SerializeField]
     private Vector2 spawnPoint;
@@ -64,6 +60,13 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
     private char[] charArr = { 'a', 'b', 'c' };
 
+    private int mapX;
+    public int MapX
+    { get { return mapX; } }
+    private int mapY;
+    public int MapY
+    { get { return mapY; } }
+
     private void Awake()
     {
         this.tileR0 = new List<GameObject>();
@@ -85,6 +88,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
         //set spawn and end point of creeps
         this.spawnPos = new GridPos((int)this.spawnPoint.x, (int)this.spawnPoint.y);
         this.destinationPos = new GridPos((int)this.destroyPoint.x, (int)this.destroyPoint.y);
+
+        this.spawnGate = Resources.Load("gates/spawnGate", typeof(GameObject)) as GameObject;
+        this.destinationGate = Resources.Load("gates/destinationGate", typeof(GameObject)) as GameObject;
 
         this.cameraInput = Camera.main.GetComponent<CameraInput>();
         return;
@@ -111,10 +117,10 @@ public class LevelGenerator : Singleton<LevelGenerator>
         string[] mapResource = ReadMapFile(mapType);
 
         //get number of characters in each row
-        int mapX = mapResource[0].ToCharArray().Length;
+        this.mapX = mapResource[0].ToCharArray().Length;
         //Debug.Log(mapX);
         //get number of rows
-        int mapY = mapResource.Length;
+        this.mapY = mapResource.Length;
         //Debug.Log(mapY);
         Vector3 maxTile = Vector3.zero;
         //mapResource[1].Replace(' ', ',');
@@ -240,11 +246,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private void SpawnPoints()
     {
         //create the starting point of creeps
-        GameObject tmp = Instantiate(this.startPos, this.tiles[this.spawnPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
+        GameObject tmp = Instantiate(this.spawnGate, this.tiles[this.spawnPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
         this.creepGate = tmp.GetComponent<CreepGate>();
 
         //create the end point of creeps
-        Instantiate(this.endPos, this.tiles[this.destinationPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
+        Instantiate(this.destinationGate, this.tiles[this.destinationPos].transform.GetComponent<TileData>().centreOfTile, Quaternion.identity);
         return;
     }
 
@@ -264,8 +270,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
         }
     }
 
+    /// <summary>
+    /// loads each row of map1
+    /// </summary>
     private void LoadMap1()
     {
+        //row0
         LoadTiles(this.tileR0, "m1/r0/0,0");
         LoadTiles(this.tileR0, "m1/r0/1,0");
         LoadTiles(this.tileR0, "m1/r0/2,0");
@@ -278,6 +288,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         LoadTiles(this.tileR0, "m1/r0/9,0");
         LoadTiles(this.tileR0, "m1/r0/10,0");
 
+        //row1
         LoadTiles(this.tileR1, "m1/r1/0,1");
         LoadTiles(this.tileR1, "m1/r1/1,1");
         LoadTiles(this.tileR1, "m1/r1/2,1");
@@ -290,6 +301,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         LoadTiles(this.tileR1, "m1/r1/9,1");
         LoadTiles(this.tileR1, "m1/r1/10,1");
 
+        //row2
         LoadTiles(this.tileR2, "m1/r2/0,2");
         LoadTiles(this.tileR2, "m1/r2/1,2");
         LoadTiles(this.tileR2, "m1/r2/2,2");
@@ -302,6 +314,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         LoadTiles(this.tileR2, "m1/r2/9,2");
         LoadTiles(this.tileR2, "m1/r2/10,2");
 
+        //row3
         LoadTiles(this.tileR3, "m1/r3/0,3");
         LoadTiles(this.tileR3, "m1/r3/1,3");
         LoadTiles(this.tileR3, "m1/r3/2,3");
@@ -314,6 +327,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         LoadTiles(this.tileR3, "m1/r3/9,3");
         LoadTiles(this.tileR3, "m1/r3/10,3");
 
+        //row4
         LoadTiles(this.tileR4, "m1/r4/0,4");
         LoadTiles(this.tileR4, "m1/r4/1,4");
         LoadTiles(this.tileR4, "m1/r4/2,4");
@@ -326,6 +340,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         LoadTiles(this.tileR4, "m1/r4/9,4");
         LoadTiles(this.tileR4, "m1/r4/10,4");
 
+        //row5
         LoadTiles(this.tileR5, "m1/r5/0,5");
         LoadTiles(this.tileR5, "m1/r5/1,5");
         LoadTiles(this.tileR5, "m1/r5/2,5");
@@ -338,6 +353,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         LoadTiles(this.tileR5, "m1/r5/9,5");
         LoadTiles(this.tileR5, "m1/r5/10,5");
 
+        //row6
         LoadTiles(this.tileR6, "m1/r6/0,6");
         LoadTiles(this.tileR6, "m1/r6/1,6");
         LoadTiles(this.tileR6, "m1/r6/2,6");

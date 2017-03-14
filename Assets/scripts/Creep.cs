@@ -45,10 +45,7 @@ public class Creep : MonoBehaviour
     private void Update()
     {
         if (this.wayPoints != null)
-        {
             MoveToDestination();
-            Debug.Log("moving ? ");
-        }
 
         if(this.health.CurrentVal == 0)
         {
@@ -56,12 +53,6 @@ public class Creep : MonoBehaviour
         }
 
         WaitToCalWayPoints(2.0f);
-    }
-
-    private IEnumerator WaitForAllCreeps(TileData td)
-    {
-        yield return new WaitForSeconds(1.0f);
-        td.B = false;
     }
 
     /// <summary>

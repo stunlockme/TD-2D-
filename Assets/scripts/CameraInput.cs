@@ -7,14 +7,15 @@ public class CameraInput : MonoBehaviour
     private float camSpeed;
     private float xMax;
     private float yMin;
-
     private float zoomSpeed;
     private float targetOrtho;
     private float smoothSpeed;
     private float minOrtho;
     private float maxOrtho;
+    private const string mouseWheel = "Mouse ScrollWheel";
 
-	private void Start ()
+
+    private void Start ()
     {
         this.camSpeed = 5.0f;
         this.xMax = 0;
@@ -71,7 +72,7 @@ public class CameraInput : MonoBehaviour
 
     private void Zoom()
     {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        float scroll = Input.GetAxis(mouseWheel);
         if(scroll != 0.0f)
         {
             targetOrtho -= scroll * zoomSpeed;

@@ -44,20 +44,6 @@ public class TileData : MonoBehaviour
         }
     }
 
-    private bool b = false;
-    public bool B
-    {
-        get
-        {
-            return b;
-        }
-
-        set
-        {
-            b = value;
-        }
-    }
-
     private TowerRange towerRange;
     private List<Color32> colorList;
 
@@ -117,7 +103,7 @@ public class TileData : MonoBehaviour
             if (this.isTowerPlaced || this.specialCase)
                 this.spriteRenderer.color = this.colorList[0];
             else if (Input.GetMouseButtonDown(0))
-                SpawnTower();
+                SpawnTower(LevelGenerator.Instance.MapX, LevelGenerator.Instance.MapY);
         }
         else if(!EventSystem.current.IsPointerOverGameObject() && GameHandler.Instance.selectedBtn == null && Input.GetMouseButtonDown(0))
         {
@@ -140,34 +126,86 @@ public class TileData : MonoBehaviour
     /// <summary>
     /// creates the tower and takes gold from player
     /// </summary>
-    private void SpawnTower()
+    private void SpawnTower(int mapX, int mapY)
     {
         this.towerRef = Instantiate(GameHandler.Instance.selectedBtn.TowerPrefab, this.transform.position, Quaternion.identity);
         this.towerRef.GetComponent<SpriteRenderer>().sortingOrder = this.gridPosition.Y;
         this.towerRef.transform.SetParent(this.transform);
         this.towerRange = this.towerRef.transform.GetChild(0).GetComponent<TowerRange>();
         this.isTowerPlaced = true;
-        this.b = true;
         this.spriteRenderer.color = Color.white;
+        LockDiagonalTiles();
+        CheckIfCreepHasPathAvailable(mapX, mapY);
+        GameHandler.Instance.ResetTower();  
+        return;
+    }
+
+    /// <summary>
+    /// sets diagonal tiles not to build towers
+    /// using these rules to not block creep path to destination
+    /// </summary>
+    private void LockDiagonalTiles()
+    {
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y - 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].specialCase = true;
-        //if(this.gridPosition.Y == 3)
-        //{
-        //    if(LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y - 1)].IsTowerPlaced && LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 1)].IsTowerPlaced)
-        //    {
-        //        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 2)].SpecialCase = true;
-        //    }
-        //}
-        //if (this.gridPosition.Y == 2)
-        //{
-        //    if (LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 1)].IsTowerPlaced && LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 2)].IsTowerPlaced)
-        //    {
-        //        LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X, this.gridPosition.Y + 3)].SpecialCase = true;
-        //    }
-        //}
-        GameHandler.Instance.ResetTower();  
+        return;
+    }
+
+    /// <summary>
+    /// keeps a tile open for creeps to move to destination
+    /// </summary>
+    /// <param name="mapX"></param>
+    /// <param name="mapY"></param>
+    private void CheckIfCreepHasPathAvailable(int mapX, int mapY)
+    {
+
+        int countX = 0;
+        for (int x = 0; x < mapX; x++)
+        {
+            int y = this.gridPosition.Y;
+            GridPos gridPos = new GridPos(x, y);
+            if (LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced || LevelGenerator.Instance.tiles[gridPos].SpecialCase)
+            {
+                countX += 1;
+            }
+        }
+        if (countX > mapX - 2)
+        {
+            for (int x = 0; x < mapX; x++)
+            {
+                int y = this.gridPosition.Y;
+                GridPos gridPos = new GridPos(x, y);
+                if (!LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced && !LevelGenerator.Instance.tiles[gridPos].SpecialCase)
+                {
+                    LevelGenerator.Instance.tiles[gridPos].SpecialCase = true;
+                }
+            }
+        }
+
+        int countY = 0;
+        for (int y = 0; y < mapY; y++)
+        {
+            int x = this.gridPosition.X;
+            GridPos gridPos = new GridPos(x, y);
+            if (LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced || LevelGenerator.Instance.tiles[gridPos].SpecialCase)
+            {
+                countY += 1;
+            }
+        }
+        if (countY > mapY - 2)
+        {
+            for (int y = 0; y < mapY; y++)
+            {
+                int x = this.gridPosition.X;
+                GridPos gridPos = new GridPos(x, y);
+                if (!LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced && !LevelGenerator.Instance.tiles[gridPos].SpecialCase)
+                {
+                    LevelGenerator.Instance.tiles[gridPos].SpecialCase = true;
+                }
+            }
+        }
         return;
     }
 }

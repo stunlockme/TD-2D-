@@ -35,12 +35,19 @@ public class TowerProjectile : MonoBehaviour {
         MoveToCreep();
 	}
 
+    /// <summary>
+    /// initialize tower range to get the creep to attack
+    /// </summary>
+    /// <param name="towerRange"></param>
     public void Init(TowerRange towerRange)
     {
         this.towerRange = towerRange;
         this.creepTarget = this.towerRange.CreepTarget;
     }
 
+    /// <summary>
+    /// move projectile towards the creep
+    /// </summary>
     private void MoveToCreep()
     {
         if (this.creepTarget != null && GameHandler.Instance.CreepsInScene.Contains(this.creepTarget.name))

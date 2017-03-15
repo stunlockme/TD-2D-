@@ -165,6 +165,9 @@ public class TileData : MonoBehaviour
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = false;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].specialCase = false;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].specialCase = false;
+        GridPos gridPos = new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1);
+        if(gridPos.X == LevelGenerator.Instance.SpawnPos.X + 1 && gridPos.Y == LevelGenerator.Instance.SpawnPos.Y)
+            LevelGenerator.Instance.tiles[gridPos].specialCase = true;
         return;
     }
 

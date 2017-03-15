@@ -23,6 +23,7 @@ public class SellTower : MonoBehaviour {
 	private void Update ()
     {
         GetTileData();
+        this.parentCanvas.GetComponent<Canvas>().sortingOrder = this.parentTower.GetComponent<SpriteRenderer>().sortingOrder + 1;
 	}
 
     public void RestoreGold()

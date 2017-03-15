@@ -65,8 +65,6 @@ public class GameHandler : Singleton<GameHandler>
     [SerializeField]
     private List<GameObject> towerProjectileList;
 
-    private Dictionary<string, int> towerPrices = new Dictionary<string, int>();
-
     private void Awake()
     {
         //load the cursor icon as a texture2d
@@ -96,11 +94,6 @@ public class GameHandler : Singleton<GameHandler>
 
         this.waveCount = 0;
         this.creepsToSpawn = 0;
-
-        this.towerPrices.Add("red_tower", 2);
-        this.towerPrices.Add("brown_tower", 5);
-
-        Debug.Log(this.towerPrices["red_tower"]);
         return;
     }
 	

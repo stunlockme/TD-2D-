@@ -54,7 +54,7 @@ public class GameHandler : Singleton<GameHandler>
         get { return creepsInScene.Count > 0; }
     }
 
-    private string ranger;
+    private string caveMan;
     private string puck;
 
     private string creepType;
@@ -70,7 +70,7 @@ public class GameHandler : Singleton<GameHandler>
         //load the cursor icon as a texture2d
         this.cursorTexture = Resources.Load(cursorName) as Texture2D;
 
-        this.ranger = "ranger";
+        this.caveMan = "caveMan";
         this.puck = "puck";
 
         this.waveText = GameObject.Find(waveTextName).GetComponent<Text>();
@@ -192,12 +192,12 @@ public class GameHandler : Singleton<GameHandler>
         for (int i = 0; i < creepsToSpawn; i++)
         {
             LevelGenerator.Instance.CreateWayPoints(LevelGenerator.Instance.SpawnPos, LevelGenerator.Instance.DestinationPos);
-            int creepIndex = Random.Range(0, 2);
+            int creepIndex = 0;//Random.Range(0, 2);
             creepType = string.Empty;
             switch (creepIndex)
             {
                 case 0:
-                    creepType = this.ranger;
+                    creepType = this.caveMan;
                     break;
                 case 1:
                     creepType = this.puck;

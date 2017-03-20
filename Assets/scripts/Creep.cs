@@ -27,9 +27,16 @@ public class Creep : MonoBehaviour
     [SerializeField]
     private Stat health;
 
+    private Animator animator;
+    private const string vertical = "Vertical";
+    private const string horizontal = "Horizontal";
+
     private void Awake()
     {
+        this.animator = this.transform.GetComponent<Animator>();
+        this.animator.enabled = true;
         health.Init();
+        this.gridPos = LevelGenerator.Instance.SpawnPos;
     }
 
     private void Start()
@@ -66,6 +73,7 @@ public class Creep : MonoBehaviour
         {
             if (this.wayPoints != null && this.wayPoints.Count > 0)
             {
+                SetAnimTrigger(this.gridPos, this.wayPoints.Peek().gridPos);
                 this.gridPos = this.wayPoints.Peek().gridPos;
                 this.destination = this.wayPoints.Pop().worldPos;
             }
@@ -91,6 +99,7 @@ public class Creep : MonoBehaviour
             {
                 this.wayPoints = new Stack<Node>();
                 this.wayPoints = wayPoints;
+                SetAnimTrigger(this.gridPos, this.wayPoints.Peek().gridPos);
                 this.gridPos = this.wayPoints.Peek().gridPos;
                 this.destination = this.wayPoints.Pop().worldPos;
                 return;
@@ -146,6 +155,42 @@ public class Creep : MonoBehaviour
             TowerProjectile tp = collision.GetComponent<TowerProjectile>();
             this.health.CurrentVal -= tp.Damage;
             return;
+        }
+    }
+
+    /// <summary>
+    /// play's animation using objects direction
+    /// </summary>
+    /// <param name="currentPos"></param>
+    /// <param name="nextPos"></param>
+    private void SetAnimTrigger(GridPos currentPos, GridPos nextPos)
+    {
+        if(currentPos.Y > nextPos.Y)
+        {
+            //up
+            this.animator.SetInteger(vertical, 1);
+            this.animator.SetInteger(horizontal, 0);
+        }
+        else if(currentPos.Y < nextPos.Y)
+        {
+            //down
+            this.animator.SetInteger(vertical, -1);
+            this.animator.SetInteger(horizontal, 0);
+        }
+        if(currentPos.Y == nextPos.Y)
+        {
+            if(currentPos.X > nextPos.X)
+            {
+                //left
+                this.animator.SetInteger(vertical, 0);
+                this.animator.SetInteger(horizontal, -1);
+            }
+            else if(currentPos.X < nextPos.X)
+            {
+                //right
+                this.animator.SetInteger(vertical, 0);
+                this.animator.SetInteger(horizontal, 1);
+            }
         }
     }
 }

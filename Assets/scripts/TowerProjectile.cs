@@ -6,9 +6,10 @@ public class TowerProjectile : MonoBehaviour {
 
     private SpriteRenderer spriteRenderer;
     private Creep creepTarget;
-    private TowerRange towerRange;
+    private TowerRange towerRange = null;
+    private BarrackUnit barrackUnit = null;
     private const string projectileObjects = "ProjectileObjects";
-    private const string creep = "Creep";
+    //private const string creep = "Creep";
     private GameObject parent;
 
     [SerializeField]
@@ -39,10 +40,18 @@ public class TowerProjectile : MonoBehaviour {
     /// initialize tower range to get the creep to attack
     /// </summary>
     /// <param name="towerRange"></param>
-    public void Init(TowerRange towerRange)
+    public void Init(TowerRange towerRange = null, BarrackUnit barrackUnit = null)
     {
-        this.towerRange = towerRange;
-        this.creepTarget = this.towerRange.CreepTarget;
+        if(towerRange != null)
+        {
+            this.towerRange = towerRange;
+            this.creepTarget = this.towerRange.CreepTarget;
+        }
+        if(barrackUnit != null)
+        {
+            this.barrackUnit = barrackUnit;
+            this.creepTarget = this.barrackUnit.CreepTarget;
+        }
     }
 
     /// <summary>
@@ -51,14 +60,19 @@ public class TowerProjectile : MonoBehaviour {
     private void MoveToCreep()
     {
         if (this.creepTarget != null && GameHandler.Instance.CreepsInScene.Contains(this.creepTarget.name))
-            this.transform.position = Vector2.MoveTowards(this.transform.position, this.creepTarget.transform.position, this.towerRange.ProjectileSpeed * Time.deltaTime);
+        {
+            if(this.towerRange != null)
+                this.transform.position = Vector2.MoveTowards(this.transform.position, this.creepTarget.transform.position, this.towerRange.ProjectileSpeed * Time.deltaTime);
+            else if (this.barrackUnit != null)
+                this.transform.position = Vector2.MoveTowards(this.transform.position, this.creepTarget.transform.position, this.barrackUnit.ProjectileSpeed * Time.deltaTime);
+        }
         else if (this.creepTarget.IsDead)
             DestroyObj();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == creep)
+        if(collision.tag == GameHandler.Instance.Visible)
             DestroyObj();
     }
 

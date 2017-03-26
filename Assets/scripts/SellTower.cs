@@ -5,25 +5,32 @@ using UnityEngine.UI;
 
 public class SellTower : MonoBehaviour {
 
-    private GameObject parentCanvas;
+    private Canvas parentCanvas;
     private GameObject parentTower;
+    private SpriteRenderer parentRenderer;
     private int sellPrice;
     private Text sellText;
     private TileData td;
 	
 	void Start ()
     {
-        this.parentCanvas = this.transform.parent.gameObject;
         this.parentTower = this.parentCanvas.transform.parent.gameObject;
+        this.parentRenderer = this.parentTower.GetComponent<SpriteRenderer>();
+        this.parentCanvas = this.parentCanvas.GetComponent<Canvas>();
         this.sellPrice = this.parentTower.transform.GetChild(0).GetComponent<TowerRange>().TowerPrice;
         this.sellText = this.transform.GetChild(0).GetComponent<Text>();
         this.sellText.text = this.sellPrice.ToString();
+        //Debug.Log(td.centreOfTile);
 	}
 	
 	private void Update ()
     {
-        GetTileData();
-        this.parentCanvas.GetComponent<Canvas>().sortingOrder = this.parentTower.GetComponent<SpriteRenderer>().sortingOrder + 1;
+        if(this.td == null)
+        {
+            GetTileData();
+            this.parentCanvas.sortingOrder = this.parentRenderer.sortingOrder + 1;
+            return;
+        }
 	}
 
     public void RestoreGold()
@@ -31,10 +38,11 @@ public class SellTower : MonoBehaviour {
         GameHandler.Instance.Gold += this.sellPrice;
         td.UnLockDiagonalTiles();
         Destroy(this.parentTower);
+        return;
     }
 
     private void GetTileData()
     {
-        td = this.parentTower.transform.parent.GetComponent<TileData>();
+        this.td = this.parentTower.transform.parent.GetComponent<TileData>();
     }
 }

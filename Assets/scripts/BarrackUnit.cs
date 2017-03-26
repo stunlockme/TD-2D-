@@ -2,18 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerRange : MonoBehaviour {
-
+public class BarrackUnit : MonoBehaviour
+{
+    private TileData td;
+    private GridPos gridPos;
     private SpriteRenderer spriteRenderer;
+    [SerializeField]
+    private int gridX;
+    [SerializeField]
+    private int gridY;
+
+    private Queue<Creep> creepQueue = new Queue<Creep>();
     private Creep creepTarget;
     public Creep CreepTarget
     {
         get { return creepTarget; }
     }
-    private Queue<Creep> creepQueue = new Queue<Creep>();
-
     [SerializeField]
     private string tpType;
+
+    private bool attackIsActive;
+    private float timer;
 
     [SerializeField]
     private float timeBtwAttack;
@@ -25,56 +34,39 @@ public class TowerRange : MonoBehaviour {
         get { return projectileSpeed; }
     }
 
-    private float timer;
-    private bool attackIsActive;
-
-    [SerializeField]
-    private GameObject sellCanvas;
-    public GameObject SellCanvas
-    { get { return sellCanvas; } }
-
-    [SerializeField]
-    private int towerPrice;
-    public int TowerPrice
-    { get { return towerPrice; } }
-
-    private const string barracks = "_barracks(Clone)";
-
-
-    private void Start ()
+    private void Awake()
     {
-        this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+        this.spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    void Start ()
+    {
+        this.td = this.transform.parent.parent.gameObject.GetComponent<TileData>();
+        this.gridPos = td.gridPosition;
+        this.gridPos.X -= gridX;
+        this.gridPos.Y -= gridY;
         this.attackIsActive = true;
-        //Debug.Log(this.transform.parent.name);
-	}
-	
-	
-	private void Update ()
+    }
+
+	void Update ()
     {
+        if(LevelGenerator.Instance.tiles.ContainsKey(this.gridPos))
+        {
+            if (!LevelGenerator.Instance.tiles[this.gridPos].IsTowerPlaced)
+                this.transform.position = Vector2.MoveTowards(this.transform.position, LevelGenerator.Instance.tiles[this.gridPos].centreOfTile, 2.0f * Time.deltaTime);
+            else if(LevelGenerator.Instance.tiles[this.gridPos].IsTowerPlaced)
+                spriteRenderer.enabled = false;
+        }
+
         Attack();
     }
 
-    /// <summary>
-    /// activate or de-activate the renderer
-    /// </summary>
-    public void ActivateRange()
-    {
-        this.spriteRenderer.enabled = !this.spriteRenderer.enabled;
-    }
-
-    /// <summary>
-    /// attacks each creep based on a time delay
-    /// initializes the tower projectile
-    /// </summary>
     private void Attack()
     {
-        Debug.Log(this.transform.parent.gameObject.name);
-        if (this.transform.parent.gameObject.name == barracks)
-            return;
-        if(!this.attackIsActive)
+        if (!this.attackIsActive)
         {
             this.timer += Time.deltaTime;
-            if(this.timer > this.timeBtwAttack)
+            if (this.timer > this.timeBtwAttack)
             {
                 this.attackIsActive = true;
                 this.timer = 0;
@@ -86,17 +78,17 @@ public class TowerRange : MonoBehaviour {
             this.creepTarget = this.creepQueue.Dequeue();
         }
 
-        if(this.creepTarget != null)
+        if (this.creepTarget != null)
         {
-            if(GameHandler.Instance.CreepsInScene.Contains(this.creepTarget.name))
+            if (GameHandler.Instance.CreepsInScene.Contains(this.creepTarget.name))
             {
-                if(this.attackIsActive)
+                if (this.attackIsActive)
                 {
-                    if(this.creepTarget.transform.gameObject.tag == GameHandler.Instance.Visible)
+                    if (this.creepTarget.transform.gameObject.tag == GameHandler.Instance.Visible)
                     {
                         TowerProjectile tp = GameHandler.Instance.GetTowerProjectileType(this.tpType).GetComponent<TowerProjectile>();
                         tp.transform.position = this.transform.position;
-                        tp.Init(this);
+                        tp.Init(null, this);
                         this.attackIsActive = false;
                     }
                 }
@@ -114,11 +106,5 @@ public class TowerRange : MonoBehaviour {
     {
         if (collision.tag == GameHandler.Instance.Visible)
             this.creepTarget = null;
-    }
-
-    public void DisableSellBtn()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-            this.sellCanvas.SetActive(!this.sellCanvas.activeSelf);
     }
 }

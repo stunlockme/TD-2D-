@@ -54,6 +54,11 @@ public class Creep : MonoBehaviour
         if (this.wayPoints != null)
             MoveToDestination();
 
+        if(this.gameObject.tag == "Visible")
+        {
+            this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+
         if(this.health.CurrentVal == 0)
         {
             StartCoroutine(DestroyObj(0));

@@ -67,6 +67,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
     public int MapY
     { get { return mapY; } }
 
+    [SerializeField]
+    private GameObject visibilitytwr;
+
     private void Awake()
     {
         this.tileR0 = new List<GameObject>();
@@ -184,6 +187,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
             gridPos = new GridPos((int)this.destroyPoint.x - 1, (int)this.destroyPoint.y);
             this.tiles[gridPos].SpecialCase = true;
         }
+
+        //Instantiate(visibilitytwr, LevelGenerator.Instance.tiles[new GridPos(5, 3)].transform.position, Quaternion.identity);
         return;
     }
 
@@ -365,5 +370,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
         LoadTiles(this.tileR6, "mapPrefabs/m1/r6/8,6");
         LoadTiles(this.tileR6, "mapPrefabs/m1/r6/9,6");
         LoadTiles(this.tileR6, "mapPrefabs/m1/r6/10,6");
+        return;
     }
 }

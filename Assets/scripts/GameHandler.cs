@@ -65,6 +65,23 @@ public class GameHandler : Singleton<GameHandler>
     [SerializeField]
     private List<GameObject> towerProjectileList;
 
+    private GameObject barrackUnit;
+    public GameObject BarrackUnit
+    {
+        get { return barrackUnit; }
+    }
+
+    private string visible;
+    public string Visible
+    {
+        get
+        {
+            if(visible == null)
+                visible = "Visible";
+            return visible;
+        }
+    }
+
     private void Awake()
     {
         //load the cursor icon as a texture2d
@@ -75,6 +92,8 @@ public class GameHandler : Singleton<GameHandler>
 
         this.waveText = GameObject.Find(waveTextName).GetComponent<Text>();
         this.goldText = GameObject.Find(goldTextName).GetComponent<Text>();
+
+        this.barrackUnit = Resources.Load("ranger_custom", typeof(GameObject)) as GameObject;
     }
 
     private void Start ()

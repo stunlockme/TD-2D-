@@ -131,6 +131,14 @@ public class TileData : MonoBehaviour
     private void SpawnTower(int mapX, int mapY)
     {
         this.towerRef = Instantiate(GameHandler.Instance.selectedBtn.TowerPrefab, this.transform.position, Quaternion.identity);
+        //Debug.Log(GameHandler.Instance.selectedBtn.TowerPrefab.name);
+        //if(GameHandler.Instance.selectedBtn.TowerPrefab.name == "_barracks")
+        //{
+        //    Instantiate(GameHandler.Instance.BarrackUnit, LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y - 1)].transform.position, Quaternion.identity);
+        //    Instantiate(GameHandler.Instance.BarrackUnit, LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].transform.position, Quaternion.identity);
+        //    Instantiate(GameHandler.Instance.BarrackUnit, LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].transform.position, Quaternion.identity);
+        //    Instantiate(GameHandler.Instance.BarrackUnit, LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].transform.position, Quaternion.identity);
+        //}
         this.towerRef.GetComponent<SpriteRenderer>().sortingOrder = this.gridPosition.Y;
         this.towerRef.transform.SetParent(this.transform);
         this.towerRange = this.towerRef.transform.GetChild(0).GetComponent<TowerRange>();

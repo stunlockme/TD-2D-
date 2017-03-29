@@ -14,13 +14,12 @@ public class SellTower : MonoBehaviour {
 	
 	void Start ()
     {
+        this.parentCanvas = this.transform.parent.GetComponent<Canvas>();
         this.parentTower = this.parentCanvas.transform.parent.gameObject;
         this.parentRenderer = this.parentTower.GetComponent<SpriteRenderer>();
-        this.parentCanvas = this.parentCanvas.GetComponent<Canvas>();
         this.sellPrice = this.parentTower.transform.GetChild(0).GetComponent<TowerRange>().TowerPrice;
         this.sellText = this.transform.GetChild(0).GetComponent<Text>();
         this.sellText.text = this.sellPrice.ToString();
-        //Debug.Log(td.centreOfTile);
 	}
 	
 	private void Update ()
@@ -33,6 +32,9 @@ public class SellTower : MonoBehaviour {
         }
 	}
 
+    /// <summary>
+    /// restores gold to player, unlocks tiles
+    /// </summary>
     public void RestoreGold()
     {
         GameHandler.Instance.Gold += this.sellPrice;

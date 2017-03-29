@@ -46,6 +46,8 @@ public class BarrackUnit : MonoBehaviour
         this.gridPos.X -= gridX;
         this.gridPos.Y -= gridY;
         this.attackIsActive = true;
+        Debug.Log(this.gridPos.X + " " + this.gridPos.Y);
+        LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
     }
 
 	void Update ()

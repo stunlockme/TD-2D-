@@ -79,7 +79,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         this.tileR4 = new List<GameObject>();
         this.tileR5 = new List<GameObject>();
         this.tileR6 = new List<GameObject>();
-        LoadMap1();
+        LoadStoneAgeMap();
 
         //get tile width and height
         this.tileSizeX = this.tileR0[0].GetComponent<SpriteRenderer>().bounds.size.x;
@@ -121,14 +121,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         //get number of characters in each row
         this.mapX = mapResource[0].ToCharArray().Length;
-        //Debug.Log(mapX);
+
         //get number of rows
         this.mapY = mapResource.Length;
-        //Debug.Log(mapY);
+
         Vector3 maxTile = Vector3.zero;
-        //mapResource[1].Replace(' ', ',');
-        //Debug.Log(mapResource[1].Replace(' ', ','));
-        //Debug.Log(mapResource[1]);
 
         //get camera top left corner in world space
         Vector3 topLeftWorld = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
@@ -161,7 +158,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 gridPos = new GridPos(x, y);
                 this.tiles[gridPos].IsTowerPlaced = true;
             }
-            for (int y = 2; y < mapY; y++)
+            for (int y = 3; y < mapY; y++)
             {
                 int x = mapX - 1;
                 gridPos = new GridPos(x, y);
@@ -170,6 +167,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
             for (int x = 0; x < mapX; x++)
             {
                 int y = 0;
+                gridPos = new GridPos(x, y);
+                this.tiles[gridPos].IsTowerPlaced = true;
+            }
+            for (int x = 1; x < mapX; x++)
+            {
+                int y = 1;
                 gridPos = new GridPos(x, y);
                 this.tiles[gridPos].IsTowerPlaced = true;
             }
@@ -278,98 +281,98 @@ public class LevelGenerator : Singleton<LevelGenerator>
     /// <summary>
     /// loads each row of map1
     /// </summary>
-    private void LoadMap1()
+    private void LoadStoneAgeMap()
     {
         //row0
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/0,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/1,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/2,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/3,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/4,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/5,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/6,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/7,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/8,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/9,0");
-        LoadTiles(this.tileR0, "mapPrefabs/m1/r0/10,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/0,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/1,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/2,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/3,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/4,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/5,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/6,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/7,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/8,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/9,0");
+        LoadTiles(this.tileR0, "mapPrefabs/stoneAge/r0/10,0");
 
         //row1
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/0,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/1,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/2,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/3,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/4,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/5,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/6,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/7,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/8,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/9,1");
-        LoadTiles(this.tileR1, "mapPrefabs/m1/r1/10,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/0,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/1,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/2,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/3,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/4,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/5,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/6,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/7,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/8,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/9,1");
+        LoadTiles(this.tileR1, "mapPrefabs/stoneAge/r1/10,1");
 
         //row2
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/0,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/1,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/2,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/3,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/4,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/5,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/6,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/7,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/8,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/9,2");
-        LoadTiles(this.tileR2, "mapPrefabs/m1/r2/10,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/0,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/1,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/2,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/3,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/4,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/5,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/6,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/7,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/8,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/9,2");
+        LoadTiles(this.tileR2, "mapPrefabs/stoneAge/r2/10,2");
 
         //row3
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/0,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/1,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/2,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/3,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/4,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/5,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/6,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/7,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/8,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/9,3");
-        LoadTiles(this.tileR3, "mapPrefabs/m1/r3/10,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/0,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/1,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/2,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/3,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/4,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/5,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/6,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/7,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/8,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/9,3");
+        LoadTiles(this.tileR3, "mapPrefabs/stoneAge/r3/10,3");
 
         //row4
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/0,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/1,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/2,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/3,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/4,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/5,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/6,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/7,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/8,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/9,4");
-        LoadTiles(this.tileR4, "mapPrefabs/m1/r4/10,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/0,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/1,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/2,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/3,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/4,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/5,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/6,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/7,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/8,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/9,4");
+        LoadTiles(this.tileR4, "mapPrefabs/stoneAge/r4/10,4");
 
         //row5
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/0,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/1,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/2,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/3,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/4,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/5,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/6,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/7,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/8,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/9,5");
-        LoadTiles(this.tileR5, "mapPrefabs/m1/r5/10,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/0,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/1,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/2,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/3,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/4,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/5,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/6,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/7,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/8,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/9,5");
+        LoadTiles(this.tileR5, "mapPrefabs/stoneAge/r5/10,5");
 
         //row6
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/0,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/1,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/2,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/3,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/4,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/5,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/6,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/7,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/8,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/9,6");
-        LoadTiles(this.tileR6, "mapPrefabs/m1/r6/10,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/0,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/1,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/2,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/3,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/4,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/5,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/6,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/7,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/8,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/9,6");
+        LoadTiles(this.tileR6, "mapPrefabs/stoneAge/r6/10,6");
         return;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerRange : MonoBehaviour {
 
@@ -40,12 +41,14 @@ public class TowerRange : MonoBehaviour {
 
     private const string barracks = "_barracks(Clone)";
 
+    [SerializeField]
+    private Text dmgText;
+
 
     private void Start ()
     {
         this.spriteRenderer = this.GetComponent<SpriteRenderer>();
         this.attackIsActive = true;
-        //Debug.Log(this.transform.parent.name);
 	}
 	
 	
@@ -119,6 +122,10 @@ public class TowerRange : MonoBehaviour {
     public void DisableSellBtn()
     {
         if (Input.GetKeyDown(KeyCode.Z))
+        {
             this.sellCanvas.SetActive(!this.sellCanvas.activeSelf);
+            if(tpType == "circle")
+                this.dmgText.text = "Dmg: 1\n" + "Dmg: 2\n";
+        }
     }
 }

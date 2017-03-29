@@ -6,6 +6,11 @@ using UnityEngine.EventSystems;
 
 public class TileData : MonoBehaviour
 {
+    private GameObject towerRef;
+    private bool isTowerPlaced;
+    private TowerRange towerRange;
+    private List<Color32> colorList;
+
     //position of tile in the grid
     public GridPos gridPosition { get; private set; }
 
@@ -16,8 +21,6 @@ public class TileData : MonoBehaviour
     }
     public SpriteRenderer spriteRenderer { get; set; }
 
-    private GameObject towerRef;
-    private bool isTowerPlaced;
     public bool IsTowerPlaced
     {
         get
@@ -44,8 +47,18 @@ public class TileData : MonoBehaviour
         }
     }
 
-    private TowerRange towerRange;
-    private List<Color32> colorList;
+    private bool unitOnTile;
+    public bool UnitOnTile
+    {
+        get
+        {
+            return unitOnTile;
+        }
+        set
+        {
+            unitOnTile = value;
+        }
+    }
 
     private void Awake()
     {
@@ -81,6 +94,7 @@ public class TileData : MonoBehaviour
         this.transform.position = worldPos;
         this.transform.SetParent(mapTiles.transform);
         this.isTowerPlaced = false;
+        this.unitOnTile = false;
 
         if(!LevelGenerator.Instance.tiles.ContainsKey(gridPos))
         {

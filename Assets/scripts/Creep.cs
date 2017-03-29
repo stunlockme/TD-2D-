@@ -52,7 +52,10 @@ public class Creep : MonoBehaviour
     private void Update()
     {
         if (this.wayPoints != null)
-            MoveToDestination();
+        {
+            if(!LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile)
+                MoveToDestination();
+        }
 
         if(this.gameObject.tag == "Visible")
         {

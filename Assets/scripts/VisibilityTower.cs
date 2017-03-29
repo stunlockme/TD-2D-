@@ -53,7 +53,7 @@ public class VisibilityTower : MonoBehaviour
     {
         if(collision.tag == "Invisible")
         {
-            collision.tag = "Visible";
+            collision.tag = GameHandler.Instance.Visible;
             Debug.Log("hello from tower");
         }
     }

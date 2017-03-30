@@ -34,33 +34,82 @@ public class BarrackUnit : MonoBehaviour
         get { return projectileSpeed; }
     }
 
+    [SerializeField]
+    private Stat health;
+    public Stat Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            health = value;
+        }
+    }
+
+    private bool returnToBase = false;
+    private Vector3 basePos;
+    private Vector3 attackPos;
+    private float criticalHealth;
+
     private void Awake()
     {
         this.spriteRenderer = GetComponent<SpriteRenderer>();
+        this.health.Init();
     }
 
     void Start ()
     {
         this.td = this.transform.parent.parent.gameObject.GetComponent<TileData>();
+        this.basePos = LevelGenerator.Instance.tiles[this.td.gridPosition].centreOfTile;
         this.gridPos = td.gridPosition;
         this.gridPos.X -= gridX;
         this.gridPos.Y -= gridY;
+        this.attackPos = LevelGenerator.Instance.tiles[this.gridPos].centreOfTile;
         this.attackIsActive = true;
-        Debug.Log(this.gridPos.X + " " + this.gridPos.Y);
+        //Debug.Log(this.gridPos.X + " " + this.gridPos.Y);
         LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
+        this.criticalHealth = 2.0f;
     }
 
 	void Update ()
     {
-        if(LevelGenerator.Instance.tiles.ContainsKey(this.gridPos))
+        Movement();
+        Attack();
+    }
+
+    private void Movement()
+    {
+        if (LevelGenerator.Instance.tiles.ContainsKey(this.gridPos))
         {
-            if (!LevelGenerator.Instance.tiles[this.gridPos].IsTowerPlaced)
-                this.transform.position = Vector2.MoveTowards(this.transform.position, LevelGenerator.Instance.tiles[this.gridPos].centreOfTile, 2.0f * Time.deltaTime);
-            else if(LevelGenerator.Instance.tiles[this.gridPos].IsTowerPlaced)
+            if (!LevelGenerator.Instance.tiles[this.gridPos].IsTowerPlaced && this.health.CurrentVal > this.criticalHealth)
+            {
+                if (!returnToBase)
+                    this.transform.position = Vector2.MoveTowards(this.transform.position, LevelGenerator.Instance.tiles[this.gridPos].centreOfTile, 2.0f * Time.deltaTime);
+                if (this.transform.position == this.attackPos)
+                    LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
+            }
+            else if (LevelGenerator.Instance.tiles[this.gridPos].IsTowerPlaced)
                 spriteRenderer.enabled = false;
         }
+        if (this.health.CurrentVal <= this.criticalHealth)
+        {
+            this.transform.position = Vector2.MoveTowards(this.transform.position, LevelGenerator.Instance.tiles[this.td.gridPosition].centreOfTile, 2.0f * Time.deltaTime);
+            this.creepTarget = null;
+            //spriteRenderer.enabled = false;
+            LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = false;
+            this.returnToBase = true;
+            //Debug.Log("moving back");
+        }
 
-        Attack();
+        if (returnToBase && this.transform.position == this.basePos)
+        {
+            this.health.CurrentVal += 0.01f;
+            if (this.health.CurrentVal >= 9.0f)
+                returnToBase = false;
+        }
+        //Debug.Log(td.gridPosition.X + " " + td.gridPosition.Y);
     }
 
     private void Attack()

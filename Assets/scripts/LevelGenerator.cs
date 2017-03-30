@@ -106,8 +106,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.T))
-            PathData.CalcPath(this.spawnPos, this.destinationPos);
+        //if(Input.GetKeyDown(KeyCode.T))
+        //    PathData.CalcPath(this.spawnPos, this.destinationPos);
     }
     
     /// <summary>

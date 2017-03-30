@@ -30,6 +30,14 @@ public class Creep : MonoBehaviour
     private Animator animator;
     private const string vertical = "Vertical";
     private const string horizontal = "Horizontal";
+    private const string projectile = "Projectile";
+    private const string Unit = "Unit";
+
+    private BarrackUnit barrackUnitTarget;
+    private Queue<BarrackUnit> unitQueue = new Queue<BarrackUnit>();
+
+    private float timerToAttack = 0;
+    private bool attackIsActive = false;
 
     private void Awake()
     {
@@ -53,21 +61,50 @@ public class Creep : MonoBehaviour
     {
         if (this.wayPoints != null)
         {
-            if(!LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile)
+            if (!LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile)
                 MoveToDestination();
+            else
+                Attack();
         }
 
         if(this.gameObject.tag == "Visible")
         {
             this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         }
-
-        if(this.health.CurrentVal == 0)
+        //Attack();
+        if (this.health.CurrentVal == 0)
         {
             StartCoroutine(DestroyObj(0));
         }
 
         WaitToCalWayPoints(2.0f);
+    }
+
+    private void Attack()
+    {
+
+        if (this.barrackUnitTarget == null && this.unitQueue.Count > 0)
+        {
+            this.barrackUnitTarget = this.unitQueue.Dequeue();
+            Debug.Log("target set");
+        }
+        if (!attackIsActive)
+        {
+            timerToAttack += Time.deltaTime;
+            if (this.timer > 1.0f)
+            {
+                this.attackIsActive = true;
+                this.timer = 0;
+            }
+        }
+        if (this.barrackUnitTarget != null)
+        {
+            if (attackIsActive)
+            {
+                this.barrackUnitTarget.Health.CurrentVal -= 1.0f;
+                this.attackIsActive = false;
+            }
+        }
     }
 
     /// <summary>
@@ -158,11 +195,25 @@ public class Creep : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Projectile")
+        if(collision.tag == projectile)
         {
             TowerProjectile tp = collision.GetComponent<TowerProjectile>();
             this.health.CurrentVal -= tp.Damage;
             return;
+        }
+        if(collision.tag == Unit)
+        {
+            this.unitQueue.Enqueue(collision.GetComponent<BarrackUnit>());
+            //Debug.Log("added to queue");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.tag == Unit)
+        {
+            this.barrackUnitTarget = null;
+            //Debug.Log("target removed");
         }
     }
 

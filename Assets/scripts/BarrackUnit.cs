@@ -97,6 +97,7 @@ public class BarrackUnit : MonoBehaviour
         {
             this.transform.position = Vector2.MoveTowards(this.transform.position, LevelGenerator.Instance.tiles[this.td.gridPosition].centreOfTile, 2.0f * Time.deltaTime);
             this.creepTarget = null;
+            this.creepQueue.Clear();
             //spriteRenderer.enabled = false;
             LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = false;
             this.returnToBase = true;
@@ -125,9 +126,7 @@ public class BarrackUnit : MonoBehaviour
         }
 
         if (this.creepTarget == null && this.creepQueue.Count > 0)
-        {
             this.creepTarget = this.creepQueue.Dequeue();
-        }
 
         if (this.creepTarget != null)
         {

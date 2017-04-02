@@ -25,6 +25,9 @@ public class GameHandler : Singleton<GameHandler>
         }
     }
 
+    [SerializeField]
+    private GameObject pauseText;
+
     private int waveCount;
     private int creepsToSpawn;
     private Text waveText;
@@ -121,6 +124,7 @@ public class GameHandler : Singleton<GameHandler>
     {
         HandleKeyboard();
         GoldUsed();
+        PauseGame();
     }
 
     /// <summary>
@@ -304,5 +308,23 @@ public class GameHandler : Singleton<GameHandler>
             this.towerRange.ActivateRange();
 
         this.towerRange = null;
+    }
+
+    private void PauseGame()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Time.timeScale == 1.0f)
+            {
+                Time.timeScale = 0;
+                this.pauseText.SetActive(true);
+            }
+            else if (Time.timeScale == 0)
+            {
+                Time.timeScale = 1.0f;
+                this.pauseText.SetActive(false);
+            }
+        }
     }
 }

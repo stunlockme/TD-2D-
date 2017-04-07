@@ -86,7 +86,10 @@ public class BarrackUnit : MonoBehaviour
             if (!LevelGenerator.Instance.tiles[this.gridPos].IsTowerPlaced && this.health.CurrentVal > this.criticalHealth)
             {
                 if (!returnToBase)
+                {
+                    this.spriteRenderer.enabled = true;
                     this.transform.position = Vector2.MoveTowards(this.transform.position, LevelGenerator.Instance.tiles[this.gridPos].centreOfTile, 2.0f * Time.deltaTime);
+                }
                 if (this.transform.position == this.attackPos)
                     LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
             }
@@ -98,19 +101,20 @@ public class BarrackUnit : MonoBehaviour
             this.transform.position = Vector2.MoveTowards(this.transform.position, LevelGenerator.Instance.tiles[this.td.gridPosition].centreOfTile, 2.0f * Time.deltaTime);
             this.creepTarget = null;
             this.creepQueue.Clear();
-            //spriteRenderer.enabled = false;
             LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = false;
             this.returnToBase = true;
-            //Debug.Log("moving back");
         }
 
         if (returnToBase && this.transform.position == this.basePos)
         {
+            spriteRenderer.enabled = false;
             this.health.CurrentVal += 0.01f;
             if (this.health.CurrentVal >= 9.0f)
+            {
+                this.health.CurrentVal = this.health.MaxVal;
                 returnToBase = false;
+            }
         }
-        //Debug.Log(td.gridPosition.X + " " + td.gridPosition.Y);
     }
 
     private void Attack()

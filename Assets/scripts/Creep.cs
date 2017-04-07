@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Creep : MonoBehaviour
 {
+    [SerializeField]
     private float speed;
     private Vector3 destination;
     private Stack<Node> wayPoints;
@@ -38,6 +39,8 @@ public class Creep : MonoBehaviour
 
     private float timerToAttack = 0;
     private bool attackIsActive = false;
+    private bool isStunned;
+    private float stunTimer;
 
     private void Awake()
     {
@@ -49,7 +52,7 @@ public class Creep : MonoBehaviour
 
     private void Start()
     {
-        this.speed = 1.0f;
+        //this.speed = 1.0f;
         this.timer = 0;
         this.timeToDestroy = 2.5f;
         this.parent = GameObject.FindGameObjectWithTag(parentName);
@@ -61,17 +64,26 @@ public class Creep : MonoBehaviour
     {
         if (this.wayPoints != null)
         {
-            if (!LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile)
+            if (!LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile && !isStunned)
                 MoveToDestination();
             else
                 Attack();
+        }
+
+        if(isStunned)
+        {
+            stunTimer += Time.deltaTime;
+            if(stunTimer > 3.0f)
+            {
+                isStunned = false;
+                stunTimer = 0;
+            }
         }
 
         if(this.gameObject.tag == "Visible")
         {
             this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         }
-        //Attack();
         if (this.health.CurrentVal == 0)
         {
             StartCoroutine(DestroyObj(0));
@@ -86,15 +98,14 @@ public class Creep : MonoBehaviour
         if (this.barrackUnitTarget == null && this.unitQueue.Count > 0)
         {
             this.barrackUnitTarget = this.unitQueue.Dequeue();
-            Debug.Log("target set");
         }
         if (!attackIsActive)
         {
             timerToAttack += Time.deltaTime;
-            if (this.timer > 1.0f)
+            if (this.timerToAttack > 1.0f)
             {
                 this.attackIsActive = true;
-                this.timer = 0;
+                this.timerToAttack = 0;
             }
         }
         if (this.barrackUnitTarget != null)
@@ -172,7 +183,13 @@ public class Creep : MonoBehaviour
     {
         yield return new WaitForSeconds(timeToDestroy);
         this.isDead = true;
-        yield return new WaitForSeconds(0.2f);
+        this.animator.SetBool("IsDead", true);
+        yield return new WaitForSeconds(1.0f);
+        if(this.health.CurrentVal > 0)
+        {
+            GameHandler.Instance.LivesLeft -= 1;
+            GameHandler.Instance.LivesLeftText.text = GameHandler.Instance.LivesLeft.ToString();
+        }
         GameHandler.Instance.RemoveFromScene(this.name);
         Destroy(this.gameObject);
     }
@@ -201,6 +218,11 @@ public class Creep : MonoBehaviour
             this.health.CurrentVal -= tp.Damage;
             return;
         }
+        if(collision.tag == "Stun")
+        {
+            isStunned = true;
+        }
+
         if(collision.tag == Unit)
         {
             this.unitQueue.Enqueue(collision.GetComponent<BarrackUnit>());
@@ -224,27 +246,27 @@ public class Creep : MonoBehaviour
     /// <param name="nextPos"></param>
     private void SetAnimTrigger(GridPos currentPos, GridPos nextPos)
     {
-        if(currentPos.Y > nextPos.Y)
+        if (currentPos.Y > nextPos.Y)
         {
             //up
             this.animator.SetInteger(vertical, 1);
             this.animator.SetInteger(horizontal, 0);
         }
-        else if(currentPos.Y < nextPos.Y)
+        else if (currentPos.Y < nextPos.Y)
         {
             //down
             this.animator.SetInteger(vertical, -1);
             this.animator.SetInteger(horizontal, 0);
         }
-        if(currentPos.Y == nextPos.Y)
+        if (currentPos.Y == nextPos.Y)
         {
-            if(currentPos.X > nextPos.X)
+            if (currentPos.X > nextPos.X)
             {
                 //left
                 this.animator.SetInteger(vertical, 0);
                 this.animator.SetInteger(horizontal, -1);
             }
-            else if(currentPos.X < nextPos.X)
+            else if (currentPos.X < nextPos.X)
             {
                 //right
                 this.animator.SetInteger(vertical, 0);

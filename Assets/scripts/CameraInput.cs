@@ -30,7 +30,7 @@ public class CameraInput : MonoBehaviour
 	private void Update ()
     {
         PlayerInput();
-
+        ResetCameraSize();
         this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, 0, this.xMax), Mathf.Clamp(this.transform.position.y, this.yMin, 0), -10.0f);
         Zoom();
 	}
@@ -68,6 +68,14 @@ public class CameraInput : MonoBehaviour
         this.xMax = maxTile.x - worldPoint.x;
         this.yMin = maxTile.y - worldPoint.y;
         return;
+    }
+
+    private void ResetCameraSize()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            this.targetOrtho = 8.0f;
+        }
     }
 
     private void Zoom()

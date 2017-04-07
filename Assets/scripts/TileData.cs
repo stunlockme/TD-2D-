@@ -19,6 +19,11 @@ public class TileData : MonoBehaviour
     {
         get { return new Vector2(this.transform.position.x + (this.transform.GetComponent<SpriteRenderer>().bounds.size.x / 2), this.transform.position.y - this.transform.GetComponent<SpriteRenderer>().bounds.size.y / 2); }
     }
+
+    public Vector2 btmCentreOfTile
+    {
+        get { return new Vector2(this.transform.position.x + (this.transform.GetComponent<SpriteRenderer>().bounds.size.x / 2), this.transform.position.y - this.transform.GetComponent<SpriteRenderer>().bounds.size.y); }
+    }
     public SpriteRenderer spriteRenderer { get; set; }
 
     public bool IsTowerPlaced

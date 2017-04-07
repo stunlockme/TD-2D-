@@ -34,7 +34,21 @@ public class TowerProjectile : MonoBehaviour {
 	void Update ()
     {
         MoveToCreep();
-	}
+
+        Debug.Log(this.name);
+        if(this.name == "Medieval_Light(Clone)")
+        {
+            Vector3 vectorToTarget = this.creepTarget.transform.position - transform.position;
+            float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+            angle -= 180;
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 5.0f);
+        }
+        else
+        {
+            transform.Rotate(0, 0, Time.deltaTime * 100);
+        }
+    }
 
     /// <summary>
     /// initialize tower range to get the creep to attack

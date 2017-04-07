@@ -1,0 +1,840 @@
+fileFormatVersion: 2
+guid: bc6a4d54f32c3444d8f3e91e7c6e4dc9
+timeCreated: 1491432384
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: bigCaveman_0
+    21300002: bigCaveman_1
+    21300004: bigCaveman_2
+    21300006: bigCaveman_3
+    21300008: bigCaveman_4
+    21300010: bigCaveman_5
+    21300012: bigCaveman_6
+    21300014: bigCaveman_7
+    21300016: bigCaveman_8
+    21300018: bigCaveman_9
+    21300020: bigCaveman_10
+    21300022: bigCaveman_11
+    21300024: bigCaveman_12
+    21300026: bigCaveman_13
+    21300028: bigCaveman_14
+    21300030: bigCaveman_15
+    21300032: bigCaveman_16
+    21300034: bigCaveman_17
+    21300036: bigCaveman_18
+    21300038: bigCaveman_19
+    21300040: bigCaveman_20
+    21300042: bigCaveman_21
+    21300044: bigCaveman_22
+    21300046: bigCaveman_23
+    21300048: bigCaveman_24
+    21300050: bigCaveman_25
+    21300052: bigCaveman_26
+    21300054: bigCaveman_27
+    21300056: bigCaveman_28
+    21300058: bigCaveman_29
+    21300060: bigCaveman_30
+    21300062: bigCaveman_31
+    21300064: bigCaveman_32
+    21300066: bigCaveman_33
+    21300068: bigCaveman_34
+    21300070: bigCaveman_35
+    21300072: bigCaveman_36
+    21300074: bigCaveman_37
+    21300076: bigCaveman_38
+    21300078: bigCaveman_39
+    21300080: bigCaveman_40
+    21300082: bigCaveman_41
+    21300084: bigCaveman_42
+    21300086: bigCaveman_43
+    21300088: bigCaveman_44
+    21300090: bigCaveman_45
+    21300092: bigCaveman_46
+    21300094: bigCaveman_47
+    21300096: bigCaveman_48
+    21300098: bigCaveman_49
+    21300100: bigCaveman_50
+    21300102: bigCaveman_51
+    21300104: bigCaveman_52
+    21300106: bigCaveman_53
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 300
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bigCaveman_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3340
+        width: 8
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_1
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 3021
+        width: 341
+        height: 547
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_2
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 3021
+        width: 377
+        height: 547
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_3
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 3021
+        width: 402
+        height: 547
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_4
+      rect:
+        serializedVersion: 2
+        x: 1228
+        y: 3021
+        width: 445
+        height: 549
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_5
+      rect:
+        serializedVersion: 2
+        x: 1689
+        y: 3021
+        width: 394
+        height: 558
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_6
+      rect:
+        serializedVersion: 2
+        x: 2099
+        y: 3021
+        width: 394
+        height: 558
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_7
+      rect:
+        serializedVersion: 2
+        x: 2513
+        y: 3027
+        width: 394
+        height: 556
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_8
+      rect:
+        serializedVersion: 2
+        x: 2927
+        y: 3352
+        width: 9
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_9
+      rect:
+        serializedVersion: 2
+        x: 2931
+        y: 3027
+        width: 344
+        height: 554
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_10
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 2447
+        width: 314
+        height: 545
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_11
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 2767
+        width: 10
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_12
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 2447
+        width: 388
+        height: 548
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_13
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 2441
+        width: 387
+        height: 549
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_14
+      rect:
+        serializedVersion: 2
+        x: 1258
+        y: 2441
+        width: 387
+        height: 549
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_15
+      rect:
+        serializedVersion: 2
+        x: 1702
+        y: 2441
+        width: 438
+        height: 541
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_16
+      rect:
+        serializedVersion: 2
+        x: 2200
+        y: 2445
+        width: 397
+        height: 539
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_17
+      rect:
+        serializedVersion: 2
+        x: 2642
+        y: 2441
+        width: 371
+        height: 537
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_18
+      rect:
+        serializedVersion: 2
+        x: 3055
+        y: 2441
+        width: 335
+        height: 539
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_19
+      rect:
+        serializedVersion: 2
+        x: 3388
+        y: 2754
+        width: 9
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_20
+      rect:
+        serializedVersion: 2
+        x: 2631
+        y: 2665
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_21
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 1835
+        width: 373
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_22
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 1835
+        width: 375
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_23
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 1835
+        width: 365
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_24
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 1839
+        width: 373
+        height: 549
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_25
+      rect:
+        serializedVersion: 2
+        x: 1316
+        y: 1837
+        width: 14
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_26
+      rect:
+        serializedVersion: 2
+        x: 1391
+        y: 1837
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_27
+      rect:
+        serializedVersion: 2
+        x: 1397
+        y: 1838
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_28
+      rect:
+        serializedVersion: 2
+        x: 1610
+        y: 1839
+        width: 373
+        height: 549
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_29
+      rect:
+        serializedVersion: 2
+        x: 2007
+        y: 1839
+        width: 357
+        height: 549
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_30
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 1263
+        width: 382
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_31
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 1263
+        width: 397
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_32
+      rect:
+        serializedVersion: 2
+        x: 862
+        y: 1263
+        width: 406
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_33
+      rect:
+        serializedVersion: 2
+        x: 1312
+        y: 1263
+        width: 396
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_34
+      rect:
+        serializedVersion: 2
+        x: 1732
+        y: 1263
+        width: 400
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_35
+      rect:
+        serializedVersion: 2
+        x: 2169
+        y: 1263
+        width: 408
+        height: 553
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_36
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 972
+        width: 9
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_37
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 646
+        width: 370
+        height: 562
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_38
+      rect:
+        serializedVersion: 2
+        x: 497
+        y: 972
+        width: 9
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_39
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 646
+        width: 372
+        height: 562
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_40
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 972
+        width: 10
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_41
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 646
+        width: 369
+        height: 562
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_42
+      rect:
+        serializedVersion: 2
+        x: 1328
+        y: 972
+        width: 10
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_43
+      rect:
+        serializedVersion: 2
+        x: 1337
+        y: 646
+        width: 372
+        height: 562
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_44
+      rect:
+        serializedVersion: 2
+        x: 1282
+        y: 886
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_45
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 62
+        width: 373
+        height: 558
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_46
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 62
+        width: 386
+        height: 560
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_47
+      rect:
+        serializedVersion: 2
+        x: 941
+        y: 63
+        width: 425
+        height: 567
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_48
+      rect:
+        serializedVersion: 2
+        x: 1380
+        y: 58
+        width: 412
+        height: 548
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_49
+      rect:
+        serializedVersion: 2
+        x: 1821
+        y: 62
+        width: 518
+        height: 457
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_50
+      rect:
+        serializedVersion: 2
+        x: 2382
+        y: 65
+        width: 558
+        height: 352
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_51
+      rect:
+        serializedVersion: 2
+        x: 2701
+        y: 411
+        width: 26
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_52
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 373
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bigCaveman_53
+      rect:
+        serializedVersion: 2
+        x: 1787
+        y: 282
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

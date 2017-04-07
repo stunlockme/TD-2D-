@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameHandler : Singleton<GameHandler>
@@ -26,9 +27,50 @@ public class GameHandler : Singleton<GameHandler>
     }
 
     [SerializeField]
+    private int livesLeft;
+    public int LivesLeft
+    {
+        get
+        {
+            return livesLeft;
+        }
+        set
+        {
+            livesLeft = value;
+        }
+    }
+
+    [SerializeField]
+    private Text livesLeftText;
+    public Text LivesLeftText
+    {
+        get
+        {
+            return livesLeftText;
+        }
+        set
+        {
+            livesLeftText = value;
+        }
+    }
+
+    [SerializeField]
     private GameObject pauseText;
 
+    [SerializeField]
+    private GameObject loadImgObj;
+
+    [SerializeField]
+    private GameObject menuBtn;
+
     private int waveCount;
+    public int WaveCount
+    {
+        get
+        {
+            return waveCount;
+        }
+    }
     private int creepsToSpawn;
     private Text waveText;
     private const string waveTextName = "WaveText";
@@ -58,7 +100,7 @@ public class GameHandler : Singleton<GameHandler>
     }
 
     private string caveMan;
-    private string puck;
+    private string bigCaveMan;
 
     private string creepType;
     private static System.Random random = new System.Random();
@@ -85,13 +127,18 @@ public class GameHandler : Singleton<GameHandler>
         }
     }
 
+    private ScreenFade screenFade;
+
+    [SerializeField]
+    private GameObject MenuBtn;
+
     private void Awake()
     {
         //load the cursor icon as a texture2d
         this.cursorTexture = Resources.Load(cursorName) as Texture2D;
 
         this.caveMan = "caveMan";
-        this.puck = "puck";
+        this.bigCaveMan = "bigCaveMan";
 
         this.waveText = GameObject.Find(waveTextName).GetComponent<Text>();
         this.goldText = GameObject.Find(goldTextName).GetComponent<Text>();
@@ -114,8 +161,10 @@ public class GameHandler : Singleton<GameHandler>
 
         SetCustomCursor();
 
-        this.waveCount = 0;
+        this.waveCount = 2;
         this.creepsToSpawn = 0;
+
+        this.livesLeftText.text = this.livesLeft.ToString();
         return;
     }
 	
@@ -125,6 +174,25 @@ public class GameHandler : Singleton<GameHandler>
         HandleKeyboard();
         GoldUsed();
         PauseGame();
+
+        if(this.livesLeft == 0)
+        {
+            StartCoroutine(LoadGameOver());
+        }
+
+        if(this.screenFade != null)
+        {
+            this.menuBtn.SetActive(false);
+            this.pauseText.SetActive(false);
+            if(!this.screenFade.sceneStarting)
+                SceneManager.LoadScene("menu_screen", LoadSceneMode.Single);
+        }
+    }
+
+    private IEnumerator LoadGameOver()
+    {
+        yield return new WaitForSeconds(5.0f);
+        SceneManager.LoadScene("gameOver_screen", LoadSceneMode.Single);
     }
 
     /// <summary>
@@ -214,8 +282,9 @@ public class GameHandler : Singleton<GameHandler>
     {
         for (int i = 0; i < creepsToSpawn; i++)
         {
+            LevelGenerator.Instance.SpawnGate.SetActive(true);
             LevelGenerator.Instance.CreateWayPoints(LevelGenerator.Instance.SpawnPos, LevelGenerator.Instance.DestinationPos);
-            int creepIndex = 0;//Random.Range(0, 2);
+            int creepIndex = Random.Range(0, 2);
             creepType = string.Empty;
             switch (creepIndex)
             {
@@ -223,7 +292,7 @@ public class GameHandler : Singleton<GameHandler>
                     creepType = this.caveMan;
                     break;
                 case 1:
-                    creepType = this.puck;
+                    creepType = this.bigCaveMan;
                     break;
             }
             Creep creep = GetCreepType(creepType).GetComponent<Creep>();
@@ -231,6 +300,7 @@ public class GameHandler : Singleton<GameHandler>
             this.creepsInScene.Add(creep.name);
             creep.Spawn();
             yield return new WaitForSeconds(2.0f);
+            LevelGenerator.Instance.SpawnGate.SetActive(false);
         }
     }
 
@@ -312,19 +382,28 @@ public class GameHandler : Singleton<GameHandler>
 
     private void PauseGame()
     {
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Time.timeScale == 1.0f)
             {
                 Time.timeScale = 0;
                 this.pauseText.SetActive(true);
+                this.menuBtn.SetActive(true);
             }
             else if (Time.timeScale == 0)
             {
                 Time.timeScale = 1.0f;
                 this.pauseText.SetActive(false);
+                this.menuBtn.SetActive(false);
             }
         }
+    }
+
+    public void BackToMenu()
+    {
+        Time.timeScale = 1.0f;
+        loadImgObj.SetActive(true);
+        this.screenFade = this.loadImgObj.transform.GetComponent<ScreenFade>();
+        //this.fadeImg.color = Color.Lerp(this.fadeImg.color, Color.black, this.fadeSpeed * Time.deltaTime);
     }
 }

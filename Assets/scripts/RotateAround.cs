@@ -13,18 +13,26 @@ public class RotateAround : MonoBehaviour
     private Vector2 centre;
     private float angle;
     private Vector2 offset;
-	
-	void Start ()
+
+    private SpriteRenderer spriterRenderer;
+
+    private void Awake()
     {
-        this.radius = 1.0f;
+        this.spriterRenderer = this.transform.GetComponent<SpriteRenderer>();
+    }
+
+    void Start ()
+    {
+        this.radius = 1.5f;
         this.centre = this.towerObj.transform.position + new Vector3(1.5f, -1.4f);
-	}
+        this.spriterRenderer.sortingOrder = this.transform.parent.transform.GetComponent<SpriteRenderer>().sortingOrder + 1;
+    }
 	
 	
-	void Update ()
+	private void Update ()
     {
         RotateObj();
-	}
+    }
 
     private void RotateObj()
     {

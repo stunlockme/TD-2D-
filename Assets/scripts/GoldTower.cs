@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoldTower : MonoBehaviour {
-
+public class GoldTower : MonoBehaviour
+{
+    [SerializeField]
+    private int goldToAdd;
     private float timerForGold;
 	
 	void Start ()
@@ -22,7 +24,7 @@ public class GoldTower : MonoBehaviour {
         this.timerForGold += Time.deltaTime;
         if(this.timerForGold > 5.0f)
         {
-            GameHandler.Instance.Gold += 1;
+            GameHandler.Instance.Gold += this.goldToAdd;
             this.timerForGold = 0;
         }
     }

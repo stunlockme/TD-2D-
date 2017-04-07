@@ -8,7 +8,10 @@ public class MouseIcon : Singleton<MouseIcon>
     private SpriteRenderer towerRangeRenderer;
     private Camera cam;
     [SerializeField]
-    private GameObject towerButtons;
+    private GameObject towerButtonsStoneAge;
+
+    [SerializeField]
+    private GameObject towerButtonsMedievalAge;
 
     private void Awake()
     {
@@ -81,7 +84,18 @@ public class MouseIcon : Singleton<MouseIcon>
         if(Input.GetKeyDown(KeyCode.G))
         {
             if (this.spriteRenderer.sprite == null)
-                this.towerButtons.SetActive(!this.towerButtons.activeSelf);
+            {
+                if(GameHandler.Instance.WaveCount <= 1)
+                {
+                    this.towerButtonsStoneAge.SetActive(!this.towerButtonsStoneAge.activeSelf);
+                    this.towerButtonsMedievalAge.SetActive(false);
+                }
+                else if(GameHandler.Instance.WaveCount >= 2)
+                {
+                    this.towerButtonsMedievalAge.SetActive(!this.towerButtonsMedievalAge.activeSelf);
+                    this.towerButtonsStoneAge.SetActive(false);
+                }
+            }
 
             return;
         }

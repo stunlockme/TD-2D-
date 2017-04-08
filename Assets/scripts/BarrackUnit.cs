@@ -110,8 +110,8 @@ public class BarrackUnit : MonoBehaviour
         if (returnToBase && this.transform.position == this.basePos)
         {
             spriteRenderer.enabled = false;
-            this.health.CurrentVal += 0.01f;
-            if (this.health.CurrentVal >= 9.0f)
+            this.health.CurrentVal += 0.1f;
+            if (this.health.CurrentVal >= this.health.MaxVal - 1.0f)
             {
                 this.health.CurrentVal = this.health.MaxVal;
                 returnToBase = false;

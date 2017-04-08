@@ -163,7 +163,7 @@ public class GameHandler : Singleton<GameHandler>
 
         SetCustomCursor();
 
-        this.waveCount = 2;
+        this.waveCount = 0;
         this.creepsToSpawn = 0;
 
         this.livesLeftText.text = this.livesLeft.ToString();
@@ -176,16 +176,18 @@ public class GameHandler : Singleton<GameHandler>
         HandleKeyboard();
         GoldUsed();
         PauseGame();
-
-        if(this.spawnGateObj == null)
-        {
-            this.spawnGateObj = GameObject.FindGameObjectWithTag("SpawnPos");
-        }
-
+        LoadMenu();
+        SetSpawnGateObj();
         if (this.livesLeft == 0)
         {
             StartCoroutine(LoadGameOver());
         }
+    }
+
+    private void SetSpawnGateObj()
+    {
+        if (this.spawnGateObj == null)
+            this.spawnGateObj = GameObject.FindGameObjectWithTag("SpawnPos");
     }
 
     private void LoadMenu()
@@ -302,7 +304,7 @@ public class GameHandler : Singleton<GameHandler>
             creep.name = RandomString(4);
             this.creepsInScene.Add(creep.name);
             creep.Spawn();
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.0f);
             this.spawnGateObj.SetActive(false);
             yield return new WaitForSeconds(2.0f);
         }
@@ -384,6 +386,9 @@ public class GameHandler : Singleton<GameHandler>
         this.towerRange = null;
     }
 
+    /// <summary>
+    /// game is paused or unpaused
+    /// </summary>
     private void PauseGame()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -403,11 +408,13 @@ public class GameHandler : Singleton<GameHandler>
         }
     }
 
+    /// <summary>
+    /// creates a loading screen before opening menu
+    /// </summary>
     public void BackToMenu()
     {
         Time.timeScale = 1.0f;
         loadImgObj.SetActive(true);
         this.screenFade = this.loadImgObj.transform.GetComponent<ScreenFade>();
-        //this.fadeImg.color = Color.Lerp(this.fadeImg.color, Color.black, this.fadeSpeed * Time.deltaTime);
     }
 }

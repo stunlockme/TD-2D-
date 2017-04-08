@@ -240,15 +240,39 @@ public class TileData : MonoBehaviour
         }
 
         int countY = 0;
+        int towerYCount = 0;
         for (int y = 0; y < mapY; y++)
         {
             int x = this.gridPosition.X;
+            Debug.Log("gridX : " + x);
             GridPos gridPos = new GridPos(x, y);
+            if (LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced)
+            {
+                towerYCount += 1;
+            }
             if (LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced || LevelGenerator.Instance.tiles[gridPos].SpecialCase)
             {
+                Debug.Log("the gridPos is : " + gridPos.X +" "+ gridPos.Y);
                 countY += 1;
+                Debug.Log("adding 1");
             }
         }
+
+        if(towerYCount >= 6)
+        {
+            for (int y = 0; y < mapY; y++)
+            {
+                int x = this.gridPosition.X;
+                GridPos gridPos = new GridPos(x, y);
+                if (!LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced && !LevelGenerator.Instance.tiles[gridPos].SpecialCase)
+                {
+                    LevelGenerator.Instance.tiles[gridPos].SpecialCase = true;
+                    Debug.Log("pathCheck" + gridPos.X + " " + gridPos.Y);
+                }
+            }
+        }
+        Debug.Log("count Y : " + countY);
+        Debug.Log("mapY : " + mapY);
         if (countY > mapY - 1)
         {
             for (int y = 0; y < mapY; y++)

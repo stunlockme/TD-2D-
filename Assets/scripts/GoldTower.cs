@@ -19,6 +19,9 @@ public class GoldTower : MonoBehaviour
         AddGold();
 	}
 
+    /// <summary>
+    /// adds gold every few seconds
+    /// </summary>
     private void AddGold()
     {
         this.timerForGold += Time.deltaTime;

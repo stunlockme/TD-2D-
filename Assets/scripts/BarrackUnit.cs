@@ -68,7 +68,6 @@ public class BarrackUnit : MonoBehaviour
         this.gridPos.Y -= gridY;
         this.attackPos = LevelGenerator.Instance.tiles[this.gridPos].centreOfTile;
         this.attackIsActive = true;
-        //Debug.Log(this.gridPos.X + " " + this.gridPos.Y);
         LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
         this.criticalHealth = 2.0f;
     }
@@ -77,10 +76,11 @@ public class BarrackUnit : MonoBehaviour
     {
         Movement();
         Attack();
-
-        //Debug.Log("Barrack unit" + this.CreepTarget);
     }
 
+    /// <summary>
+    /// handles unit movement from base to attack pos and back to heal
+    /// </summary>
     private void Movement()
     {
         if (LevelGenerator.Instance.tiles.ContainsKey(this.gridPos))
@@ -117,8 +117,13 @@ public class BarrackUnit : MonoBehaviour
                 returnToBase = false;
             }
         }
+        return;
     }
 
+    /// <summary>
+    /// attacks each creep based on a time delay
+    /// creep target is set to null when creep is out of range
+    /// </summary>
     private void Attack()
     {
         if (!this.attackIsActive)
@@ -136,6 +141,12 @@ public class BarrackUnit : MonoBehaviour
 
         if (this.creepTarget != null)
         {
+            if (this.creepTarget.GridPos.X > this.gridPos.X + 1 || this.CreepTarget.GridPos.X < this.gridPos.X - 1)
+            {
+                this.creepTarget = null;
+                //Debug.Log("out of range");
+                return;
+            }
             if (GameHandler.Instance.CreepsInScene.Contains(this.creepTarget.name))
             {
                 if (this.attackIsActive)
@@ -152,12 +163,20 @@ public class BarrackUnit : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// adds the creep to queue on collision
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == GameHandler.Instance.Visible)
             this.creepQueue.Enqueue(collision.GetComponent<Creep>());
     }
 
+    /// <summary>
+    /// sets the creepTarget to null on exiting collision
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == GameHandler.Instance.Visible)

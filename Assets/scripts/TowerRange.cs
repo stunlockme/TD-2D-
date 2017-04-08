@@ -131,14 +131,12 @@ public class TowerRange : MonoBehaviour
             this.creepTarget = null;
     }
 
+    /// <summary>
+    /// activates and de-activates sell button
+    /// </summary>
     public void DisableSellBtn()
     {
         if (Input.GetKeyDown(KeyCode.Z))
-        {
             this.sellCanvas.SetActive(!this.sellCanvas.activeSelf);
-            Debug.Log("z key hit ");
-            //if(tpType == "circle")
-            //    this.dmgText.text = "Dmg: 1\n" + "Dmg: 2\n";
-        }
     }
 }

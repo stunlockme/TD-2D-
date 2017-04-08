@@ -104,13 +104,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private void Start ()
     {
         SpawnLevel(this.mapList[0]);
-        //this.spawnGate.SetActive(true);
     }
 
     private void Update()
     {
-        //Debug.Log(this.spawnGate.activeSelf);
-        //SpawnPoints();
+        
     }
     
     /// <summary>

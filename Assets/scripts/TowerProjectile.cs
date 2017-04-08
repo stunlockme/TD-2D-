@@ -9,6 +9,7 @@ public class TowerProjectile : MonoBehaviour {
     private TowerRange towerRange = null;
     private BarrackUnit barrackUnit = null;
     private const string projectileObjects = "ProjectileObjects";
+    private const string medievalLight = "Medieval_Light(Clone)";
     //private const string creep = "Creep";
     private GameObject parent;
 
@@ -31,18 +32,28 @@ public class TowerProjectile : MonoBehaviour {
         this.spriteRenderer.sortingOrder = 4;
 	}
 	
-	void Update ()
+	private void Update ()
     {
         MoveToCreep();
+        Rotate();
+    }
 
-        Debug.Log(this.name);
-        if(this.name == "Medieval_Light(Clone)")
+    /// <summary>
+    /// rotates arrow based on angle between the arrow and creep
+    /// rotates rock on the z-axis
+    /// </summary>
+    private void Rotate()
+    {
+        if (this.name == medievalLight)
         {
-            Vector3 vectorToTarget = this.creepTarget.transform.position - transform.position;
-            float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
-            angle -= 180;
-            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-            transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 5.0f);
+            if (this.creepTarget != null)
+            {
+                Vector3 vectorToTarget = this.creepTarget.transform.position - transform.position;
+                float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+                angle -= 180;
+                Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+                transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 5.0f);
+            }
         }
         else
         {

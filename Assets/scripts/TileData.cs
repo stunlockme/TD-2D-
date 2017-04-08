@@ -20,6 +20,11 @@ public class TileData : MonoBehaviour
         get { return new Vector2(this.transform.position.x + (this.transform.GetComponent<SpriteRenderer>().bounds.size.x / 2), this.transform.position.y - this.transform.GetComponent<SpriteRenderer>().bounds.size.y / 2); }
     }
 
+    public Vector2 rightCentreOfTile
+    {
+        get { return new Vector2(this.transform.position.x + (this.transform.GetComponent<SpriteRenderer>().bounds.size.x ), this.transform.position.y - this.transform.GetComponent<SpriteRenderer>().bounds.size.y / 2); }
+    }
+
     public Vector2 btmCentreOfTile
     {
         get { return new Vector2(this.transform.position.x + (this.transform.GetComponent<SpriteRenderer>().bounds.size.x / 2), this.transform.position.y - this.transform.GetComponent<SpriteRenderer>().bounds.size.y); }
@@ -77,6 +82,7 @@ public class TileData : MonoBehaviour
         this.colorList = new List<Color32>();
         this.colorList.Add(new Color32(255, 0, 0, 255));
         this.colorList.Add(new Color32(0, 0, 255, 255));
+        this.colorList.Add(new Color32(255, 255, 0, 255));
 
         this.spriteRenderer.sortingOrder = -1;
 
@@ -120,7 +126,9 @@ public class TileData : MonoBehaviour
             if (!this.isTowerPlaced)
                 this.spriteRenderer.color = this.colorList[1];
             if (this.isTowerPlaced || this.specialCase)
+            {
                 this.spriteRenderer.color = this.colorList[0];
+            }
             else if (Input.GetMouseButtonDown(0))
                 SpawnTower(LevelGenerator.Instance.MapX, LevelGenerator.Instance.MapY);
         }
@@ -150,14 +158,7 @@ public class TileData : MonoBehaviour
     private void SpawnTower(int mapX, int mapY)
     {
         this.towerRef = Instantiate(GameHandler.Instance.selectedBtn.TowerPrefab, this.transform.position, Quaternion.identity);
-        //Debug.Log(GameHandler.Instance.selectedBtn.TowerPrefab.name);
-        //if(GameHandler.Instance.selectedBtn.TowerPrefab.name == "_barracks")
-        //{
-        //    Instantiate(GameHandler.Instance.BarrackUnit, LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y - 1)].transform.position, Quaternion.identity);
-        //    Instantiate(GameHandler.Instance.BarrackUnit, LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].transform.position, Quaternion.identity);
-        //    Instantiate(GameHandler.Instance.BarrackUnit, LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].transform.position, Quaternion.identity);
-        //    Instantiate(GameHandler.Instance.BarrackUnit, LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].transform.position, Quaternion.identity);
-        //}
+        //Debug.Log(this.gridPosition.X + " " + this.gridPosition.Y);
         this.towerRef.GetComponent<SpriteRenderer>().sortingOrder = this.gridPosition.Y;
         this.towerRef.transform.SetParent(this.transform);
         this.towerRange = this.towerRef.transform.GetChild(0).GetComponent<TowerRange>();
@@ -179,6 +180,14 @@ public class TileData : MonoBehaviour
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1)].specialCase = true;
         LevelGenerator.Instance.tiles[new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1)].specialCase = true;
+        //GridPos tmp = new GridPos(this.gridPosition.X - 1, this.gridPosition.Y - 1);
+        //Debug.Log(tmp.X + " " + tmp.Y);
+        //tmp = new GridPos(this.gridPosition.X + 1, this.gridPosition.Y - 1);
+        //Debug.Log(tmp.X + " " + tmp.Y);
+        //tmp = new GridPos(this.gridPosition.X - 1, this.gridPosition.Y + 1);
+        //Debug.Log(tmp.X + " " + tmp.Y);
+        //tmp = new GridPos(this.gridPosition.X + 1, this.gridPosition.Y + 1);
+        //Debug.Log(tmp.X + " " + tmp.Y);
         return;
     }
 
@@ -225,6 +234,7 @@ public class TileData : MonoBehaviour
                 if (!LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced && !LevelGenerator.Instance.tiles[gridPos].SpecialCase)
                 {
                     LevelGenerator.Instance.tiles[gridPos].SpecialCase = true;
+                    Debug.Log("pathCheck" + gridPos.X + " " + gridPos.Y);
                 }
             }
         }
@@ -239,7 +249,7 @@ public class TileData : MonoBehaviour
                 countY += 1;
             }
         }
-        if (countY > mapY - 2)
+        if (countY > mapY - 1)
         {
             for (int y = 0; y < mapY; y++)
             {
@@ -248,6 +258,7 @@ public class TileData : MonoBehaviour
                 if (!LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced && !LevelGenerator.Instance.tiles[gridPos].SpecialCase)
                 {
                     LevelGenerator.Instance.tiles[gridPos].SpecialCase = true;
+                    Debug.Log("pathCheck" + gridPos.X + " " + gridPos.Y);
                 }
             }
         }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TowerRange : MonoBehaviour {
+public class TowerRange : MonoBehaviour
+{
 
     private SpriteRenderer spriteRenderer;
     private Creep creepTarget;
@@ -43,13 +44,16 @@ public class TowerRange : MonoBehaviour {
 
     [SerializeField]
     private Text dmgText;
+    private GridPos gridPos;
 
 
     private void Start ()
     {
         this.spriteRenderer = this.GetComponent<SpriteRenderer>();
         this.attackIsActive = true;
-	}
+        this.gridPos = this.transform.parent.parent.GetComponent<TileData>().gridPosition;
+        Debug.Log(this.gridPos.X + " " + this.gridPos.Y);
+    }
 	
 	
 	private void Update ()
@@ -71,7 +75,6 @@ public class TowerRange : MonoBehaviour {
     /// </summary>
     private void Attack()
     {
-        Debug.Log(this.transform.parent.gameObject.name);
         if (this.transform.parent.gameObject.name == barracks)
             return;
         if(!this.attackIsActive)
@@ -83,7 +86,7 @@ public class TowerRange : MonoBehaviour {
                 this.timer = 0;
             }
         }
-
+        
         if (this.creepTarget == null && this.creepQueue.Count > 0)
         {
             this.creepTarget = this.creepQueue.Dequeue();
@@ -91,11 +94,20 @@ public class TowerRange : MonoBehaviour {
 
         if(this.creepTarget != null)
         {
-            if(GameHandler.Instance.CreepsInScene.Contains(this.creepTarget.name))
+            //Debug.Log("creep pos -> " + this.creepTarget.GridPos.X + " " + this.CreepTarget.GridPos.Y);
+            //int tmp = this.gridPos.X + 2;
+            //Debug.Log("gridPos + 2 :" + tmp);
+            if (this.creepTarget.GridPos.X > this.gridPos.X + 2 || this.creepTarget.GridPos.X < this.gridPos.X - 2)
             {
-                if(this.attackIsActive)
+                this.creepTarget = null;
+                //Debug.Log("out of range");
+                return;
+            }
+            if (GameHandler.Instance.CreepsInScene.Contains(this.creepTarget.name))
+            {
+                if (this.attackIsActive)
                 {
-                    if(this.creepTarget.transform.gameObject.tag == GameHandler.Instance.Visible)
+                    if (this.creepTarget.transform.gameObject.tag == GameHandler.Instance.Visible)
                     {
                         TowerProjectile tp = GameHandler.Instance.GetTowerProjectileType(this.tpType).GetComponent<TowerProjectile>();
                         tp.transform.position = this.transform.position;
@@ -124,8 +136,9 @@ public class TowerRange : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Z))
         {
             this.sellCanvas.SetActive(!this.sellCanvas.activeSelf);
-            if(tpType == "circle")
-                this.dmgText.text = "Dmg: 1\n" + "Dmg: 2\n";
+            Debug.Log("z key hit ");
+            //if(tpType == "circle")
+            //    this.dmgText.text = "Dmg: 1\n" + "Dmg: 2\n";
         }
     }
 }

@@ -132,6 +132,8 @@ public class GameHandler : Singleton<GameHandler>
     [SerializeField]
     private GameObject MenuBtn;
 
+    private GameObject spawnGateObj;
+
     private void Awake()
     {
         //load the cursor icon as a texture2d
@@ -175,16 +177,24 @@ public class GameHandler : Singleton<GameHandler>
         GoldUsed();
         PauseGame();
 
-        if(this.livesLeft == 0)
+        if(this.spawnGateObj == null)
+        {
+            this.spawnGateObj = GameObject.FindGameObjectWithTag("SpawnPos");
+        }
+
+        if (this.livesLeft == 0)
         {
             StartCoroutine(LoadGameOver());
         }
+    }
 
-        if(this.screenFade != null)
+    private void LoadMenu()
+    {
+        if (this.screenFade != null)
         {
             this.menuBtn.SetActive(false);
             this.pauseText.SetActive(false);
-            if(!this.screenFade.sceneStarting)
+            if (!this.screenFade.sceneStarting)
                 SceneManager.LoadScene("menu_screen", LoadSceneMode.Single);
         }
     }
@@ -221,13 +231,6 @@ public class GameHandler : Singleton<GameHandler>
         MouseIcon.Instance.DisableRenderer();
         return;
     }
-
-    //public void SellTower(TowerRange towerRange)
-    //{
-    //    this.gold += towerRange.TowerPrice;
-    //    GameObject parent = towerRange.transform.parent.gameObject;
-    //    Destroy(parent);
-    //}
 
     /// <summary>
     /// player input to cancel selected tower
@@ -282,7 +285,7 @@ public class GameHandler : Singleton<GameHandler>
     {
         for (int i = 0; i < creepsToSpawn; i++)
         {
-            LevelGenerator.Instance.SpawnGate.SetActive(true);
+            this.spawnGateObj.SetActive(true);
             LevelGenerator.Instance.CreateWayPoints(LevelGenerator.Instance.SpawnPos, LevelGenerator.Instance.DestinationPos);
             int creepIndex = Random.Range(0, 2);
             creepType = string.Empty;
@@ -300,7 +303,8 @@ public class GameHandler : Singleton<GameHandler>
             this.creepsInScene.Add(creep.name);
             creep.Spawn();
             yield return new WaitForSeconds(2.0f);
-            LevelGenerator.Instance.SpawnGate.SetActive(false);
+            this.spawnGateObj.SetActive(false);
+            yield return new WaitForSeconds(2.0f);
         }
     }
 

@@ -77,6 +77,8 @@ public class BarrackUnit : MonoBehaviour
     {
         Movement();
         Attack();
+
+        //Debug.Log("Barrack unit" + this.CreepTarget);
     }
 
     private void Movement()

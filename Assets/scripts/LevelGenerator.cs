@@ -16,17 +16,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
     private CameraInput cameraInput;
     private GameObject spawnGate;
-    public GameObject SpawnGate
-    {
-        get
-        {
-            return spawnGate;
-        }
-        set
-        {
-            spawnGate = value;
-        }
-    }
     private GameObject destinationGate;
 
     [SerializeField]
@@ -106,7 +95,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
         this.destinationPos = new GridPos((int)this.destroyPoint.x, (int)this.destroyPoint.y);
 
         this.spawnGate = Resources.Load("gates/spawnGate", typeof(GameObject)) as GameObject;
-        this.spawnGate.SetActive(false);
         this.destinationGate = Resources.Load("gates/destinationGate", typeof(GameObject)) as GameObject;
 
         this.cameraInput = Camera.main.GetComponent<CameraInput>();
@@ -116,11 +104,13 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private void Start ()
     {
         SpawnLevel(this.mapList[0]);
-	}
+        //this.spawnGate.SetActive(true);
+    }
 
     private void Update()
     {
-        
+        //Debug.Log(this.spawnGate.activeSelf);
+        //SpawnPoints();
     }
     
     /// <summary>
@@ -279,6 +269,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
     {
         this.wayPoints = PathData.CalcPath(currentPos, destinationPos);
         return this.wayPoints;
+    }
+
+    public void SpawnHoleObject()
+    {
+        this.spawnGate.SetActive(!this.spawnGate.activeSelf);
     }
 
     private void LoadTiles(List<GameObject> mapRow, string prefabName)

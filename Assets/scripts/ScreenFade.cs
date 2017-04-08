@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScreenFade : MonoBehaviour
 {
     private Image fadeImg;
-    private float fadeSpeed = 100.0f;
+    private float fadeSpeed = 500.0f;
     public bool sceneStarting;
     private float lerpT;
 
@@ -36,7 +36,7 @@ public class ScreenFade : MonoBehaviour
         this.fadeImg.color = Color.Lerp(this.fadeImg.color, Color.clear, this.lerpT);
         if(lerpT < 1)
         {
-            this.lerpT += Time.deltaTime / 500.0f;
+            this.lerpT += Time.deltaTime / this.fadeSpeed;
         }
     }
 

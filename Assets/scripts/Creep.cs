@@ -41,6 +41,55 @@ public class Creep : MonoBehaviour
     private bool attackIsActive = false;
     private bool isStunned;
     private float stunTimer;
+    private bool fightingUnit;
+    public bool FightingUnit
+    {
+        get
+        {
+            return fightingUnit;
+        }
+
+        set
+        {
+            fightingUnit = value;
+        }
+    }
+
+    private bool isMovingRight;
+    public bool IsMovingRight
+    {
+        get
+        {
+            return isMovingRight;
+        }
+    }
+
+    private bool isMovingLeft;
+    public bool IsMovingLeft
+    {
+        get
+        {
+            return isMovingLeft;
+        }
+    }
+
+    private bool isMovingUp;
+    public bool IsMovingUp
+    {
+        get
+        {
+            return isMovingUp;
+        }
+    }
+
+    private bool isMovingDown;
+    public bool IsMovingDown
+    {
+        get
+        {
+            return isMovingDown;
+        }
+    }
 
     private void Awake()
     {
@@ -218,7 +267,20 @@ public class Creep : MonoBehaviour
             this.health.CurrentVal -= tp.Damage;
             return;
         }
-        if(collision.tag == "Stun")
+        if(collision.tag == "HeavyProjectile")
+        {
+            //Debug.Log("creep grid Pos : " + sp.creepGridPos.X + " " + sp.creepGridPos.Y);
+            TowerProjectile tp = collision.GetComponent<TowerProjectile>();
+            this.health.CurrentVal -= tp.Damage;
+            return;
+        }
+        if(collision.tag == "SmallProjectile")
+        {
+            SmallProjectile sp = collision.GetComponent<SmallProjectile>();
+            this.health.CurrentVal -= sp.Damage;
+            return;
+        }
+        if (collision.tag == "Stun")
         {
             isStunned = true;
         }
@@ -251,12 +313,20 @@ public class Creep : MonoBehaviour
             //up
             this.animator.SetInteger(vertical, 1);
             this.animator.SetInteger(horizontal, 0);
+            this.isMovingUp = true;
+            this.isMovingDown = false;
+            this.isMovingLeft = false;
+            this.isMovingRight = false;
         }
         else if (currentPos.Y < nextPos.Y)
         {
             //down
             this.animator.SetInteger(vertical, -1);
             this.animator.SetInteger(horizontal, 0);
+            this.isMovingUp = false;
+            this.isMovingDown = true;
+            this.isMovingLeft = false;
+            this.isMovingRight = false;
         }
         if (currentPos.Y == nextPos.Y)
         {
@@ -265,12 +335,20 @@ public class Creep : MonoBehaviour
                 //left
                 this.animator.SetInteger(vertical, 0);
                 this.animator.SetInteger(horizontal, -1);
+                this.isMovingUp = false;
+                this.isMovingDown = false;
+                this.isMovingLeft = true;
+                this.isMovingRight = false;
             }
             else if (currentPos.X < nextPos.X)
             {
                 //right
                 this.animator.SetInteger(vertical, 0);
                 this.animator.SetInteger(horizontal, 1);
+                this.isMovingUp = false;
+                this.isMovingDown = false;
+                this.isMovingLeft = false;
+                this.isMovingRight = true;
             }
         }
     }

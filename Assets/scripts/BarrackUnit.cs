@@ -52,6 +52,7 @@ public class BarrackUnit : MonoBehaviour
     private Vector3 basePos;
     private Vector3 attackPos;
     private float criticalHealth;
+    private string targetName;
 
     private void Awake()
     {
@@ -70,6 +71,7 @@ public class BarrackUnit : MonoBehaviour
         this.attackIsActive = true;
         LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
         this.criticalHealth = 2.0f;
+        Debug.Log(this.targetName);
     }
 
 	void Update ()
@@ -141,12 +143,18 @@ public class BarrackUnit : MonoBehaviour
 
         if (this.creepTarget != null)
         {
+            this.CreepTarget.FightingUnit = true;
             if (this.creepTarget.GridPos.X > this.gridPos.X + 1 || this.CreepTarget.GridPos.X < this.gridPos.X - 1)
             {
                 this.creepTarget = null;
                 //Debug.Log("out of range");
                 return;
             }
+            //LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = false;
+            //else if (this.creepQueue.Count <= 0)
+            //{
+            //    LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
+            //}
             if (GameHandler.Instance.CreepsInScene.Contains(this.creepTarget.name))
             {
                 if (this.attackIsActive)
@@ -170,7 +178,15 @@ public class BarrackUnit : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == GameHandler.Instance.Visible)
-            this.creepQueue.Enqueue(collision.GetComponent<Creep>());
+        {
+            if (this.targetName == null)
+            {
+                this.creepQueue.Enqueue(collision.GetComponent<Creep>());
+                Creep creep = collision.GetComponent<Creep>();
+                this.targetName = creep.name;
+                Debug.Log("name is : " + this.targetName);
+            }
+        }
     }
 
     /// <summary>
@@ -180,6 +196,19 @@ public class BarrackUnit : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == GameHandler.Instance.Visible)
-            this.creepTarget = null;
+        {
+            Creep creep = collision.GetComponent<Creep>();
+            Debug.Log("exit creep name : " + creep.name);
+            if (creep.name == this.targetName)
+            {
+                this.creepTarget = null;
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        //LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = false;
+        Debug.Log(this.gridPos);
     }
 }

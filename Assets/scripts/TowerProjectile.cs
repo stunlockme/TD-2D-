@@ -20,6 +20,12 @@ public class TowerProjectile : MonoBehaviour {
         get { return damage; }
     }
 
+    [SerializeField]
+    private List<GameObject> horizontalProjectileList;
+
+    [SerializeField]
+    private List<GameObject> verticalProjectileList;
+
     private void Awake()
     {
         this.spriteRenderer = GetComponent<SpriteRenderer>();
@@ -98,7 +104,30 @@ public class TowerProjectile : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == GameHandler.Instance.Visible)
+        {
+            if(this.horizontalProjectileList.Count > 0 || this.verticalProjectileList.Count > 0)
+            {
+                Creep creepHit = collision.GetComponent<Creep>();
+                if(creepHit.IsMovingLeft || creepHit.IsMovingRight)
+                {
+                    Instantiate(this.horizontalProjectileList[0], this.transform.position, Quaternion.identity);
+                    Instantiate(this.horizontalProjectileList[1], this.transform.position, Quaternion.identity);
+                }
+                else if(creepHit.IsMovingUp || creepHit.IsMovingDown)
+                {
+                    Instantiate(this.verticalProjectileList[0], this.transform.position, Quaternion.identity);
+                    Instantiate(this.verticalProjectileList[1], this.transform.position, Quaternion.identity);
+                }
+                GameObject[] sp = GameObject.FindGameObjectsWithTag("SmallProjectile");
+                foreach (GameObject projectile in sp)
+                {
+                    SmallProjectile spObj = projectile.transform.GetComponent<SmallProjectile>();
+                    if(spObj.CreepGridPos.X <=0 && spObj.CreepGridPos.Y <= 0)
+                        spObj.CreepGridPos = creepHit.GridPos;
+                }
+            }
             DestroyObj();
+        }
     }
 
     private void DestroyObj()

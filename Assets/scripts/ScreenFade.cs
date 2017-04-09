@@ -6,11 +6,16 @@ using UnityEngine.UI;
 public class ScreenFade : MonoBehaviour
 {
     private Image fadeImg;
-    private float fadeSpeed = 500.0f;
+    private float fadeSpeed = 1000.0f;
     public bool sceneStarting;
     private float lerpT;
 
-    private bool fadeToMap; 
+    private bool fadeToMap;
+
+    [SerializeField]
+    private List<Sprite> loadSpriteList = new List<Sprite>();
+
+    private int randomIndex;
 
     private void Awake()
     {
@@ -21,8 +26,9 @@ public class ScreenFade : MonoBehaviour
 
     void Start ()
     {
-		
-	}
+        this.randomIndex = Random.Range(0, this.loadSpriteList.Count);
+        this.fadeImg.sprite = this.loadSpriteList[randomIndex];
+    }
 	
 	
 	void Update ()

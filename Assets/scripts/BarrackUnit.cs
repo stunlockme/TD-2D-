@@ -80,6 +80,8 @@ public class BarrackUnit : MonoBehaviour
         this.attackIsActive = true;
         LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
         this.criticalHealth = 2.0f;
+        if (LevelGenerator.Instance.tiles[this.gridPos].IsTowerPlaced)
+            Destroy(this.gameObject);
         Debug.Log(this.targetName);
     }
 

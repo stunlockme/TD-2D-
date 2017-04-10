@@ -81,8 +81,8 @@ public class TileData : MonoBehaviour
         //initialize and set the colours in the list
         this.colorList = new List<Color32>();
         this.colorList.Add(new Color32(255, 0, 0, 255));
-        this.colorList.Add(new Color32(0, 0, 255, 255));
-        this.colorList.Add(new Color32(255, 255, 0, 255));
+        this.colorList.Add(new Color32(138, 43, 226, 255));
+        this.colorList.Add(new Color32(0, 255, 0, 255));
 
         this.spriteRenderer.sortingOrder = -1;
 
@@ -99,7 +99,7 @@ public class TileData : MonoBehaviour
     /// <param name="gridPos"></param>
     /// <param name="worldPos"></param>
     /// <param name="mapTiles"></param>
-    public void SetTile(GridPos gridPos, Vector3 worldPos, GameObject mapTiles)
+    public void SetTile(GridPos gridPos, Vector3 worldPos, GameObject mapTiles, string mapAge)
     {
         this.gridPosition = gridPos;
         this.transform.position = worldPos;
@@ -107,11 +107,25 @@ public class TileData : MonoBehaviour
         this.isTowerPlaced = false;
         this.unitOnTile = false;
 
-        if(!LevelGenerator.Instance.tiles.ContainsKey(gridPos))
-        {
-            //add tile to dictionary with grid info
-            LevelGenerator.Instance.tiles.Add(gridPos, this);
-        }
+        //if(mapAge == "stoneAgeMap")
+        //{
+            if (!LevelGenerator.Instance.tiles.ContainsKey(gridPos))
+            {
+                //add tile to dictionary with grid info
+                LevelGenerator.Instance.tiles.Add(gridPos, this);
+            }
+        //}
+        //if(mapAge == "stoneAgeMapLarge")
+        //{
+        //    Debug.Log("large map");
+        //    if (!LevelGenerator.Instance.newAgeTiles.ContainsKey(gridPos))
+        //    {
+        //        //add tile to dictionary with grid info
+        //        LevelGenerator.Instance.newAgeTiles.Add(gridPos, this);
+        //        //Debug.Log("adding to newAgeTiles");
+        //        //Debug.Log(gridPos.X + " " + gridPos.Y);
+        //    }
+        //}
     }
 
     /// <summary>
@@ -127,7 +141,10 @@ public class TileData : MonoBehaviour
                 this.spriteRenderer.color = this.colorList[1];
             if (this.isTowerPlaced || this.specialCase)
             {
-                this.spriteRenderer.color = this.colorList[0];
+                if (this.specialCase)
+                    this.spriteRenderer.color = this.colorList[2];
+                else
+                    this.spriteRenderer.color = this.colorList[0];
             }
             else if (Input.GetMouseButtonDown(0))
                 SpawnTower(LevelGenerator.Instance.MapX, LevelGenerator.Instance.MapY);
@@ -258,16 +275,19 @@ public class TileData : MonoBehaviour
             }
         }
 
-        if(towerYCount >= 6)
+        if(GameHandler.Instance.WaveCount <= 1)
         {
-            for (int y = 0; y < mapY; y++)
+            if (towerYCount >= 6)
             {
-                int x = this.gridPosition.X;
-                GridPos gridPos = new GridPos(x, y);
-                if (!LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced && !LevelGenerator.Instance.tiles[gridPos].SpecialCase)
+                for (int y = 0; y < mapY; y++)
                 {
-                    LevelGenerator.Instance.tiles[gridPos].SpecialCase = true;
-                    Debug.Log("pathCheck" + gridPos.X + " " + gridPos.Y);
+                    int x = this.gridPosition.X;
+                    GridPos gridPos = new GridPos(x, y);
+                    if (!LevelGenerator.Instance.tiles[gridPos].IsTowerPlaced && !LevelGenerator.Instance.tiles[gridPos].SpecialCase)
+                    {
+                        LevelGenerator.Instance.tiles[gridPos].SpecialCase = true;
+                        Debug.Log("pathCheck" + gridPos.X + " " + gridPos.Y);
+                    }
                 }
             }
         }

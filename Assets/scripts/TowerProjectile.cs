@@ -26,6 +26,16 @@ public class TowerProjectile : MonoBehaviour {
     [SerializeField]
     private List<GameObject> verticalProjectileList;
 
+    [SerializeField]
+    private float stunTime;
+    public float StunTime
+    {
+        get
+        {
+            return stunTime;
+        }
+    }
+
     private void Awake()
     {
         this.spriteRenderer = GetComponent<SpriteRenderer>();

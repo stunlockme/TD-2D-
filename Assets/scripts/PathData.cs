@@ -114,6 +114,7 @@ public static class PathData
                 break;
             }
         }
+        nodeData = null;
         return shortestPath;
     }
 

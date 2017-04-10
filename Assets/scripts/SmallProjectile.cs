@@ -33,6 +33,9 @@ public class SmallProjectile : MonoBehaviour
     private GameObject parent;
     private const string projectileObjects = "ProjectileObjects";
 
+    [SerializeField]
+    private float projectileSpeed;
+
     private void Awake()
     {
         this.parent = GameObject.FindGameObjectWithTag(projectileObjects);
@@ -48,6 +51,7 @@ public class SmallProjectile : MonoBehaviour
 	void Update ()
     {
         Move();
+        transform.Rotate(0, 0, Time.deltaTime * 200);
         Debug.Log("creepGridPos is : " + creepGridPos.X + " " + creepGridPos.Y);
 	}
 
@@ -57,7 +61,7 @@ public class SmallProjectile : MonoBehaviour
         {
             GridPos tmp = new GridPos(creepGridPos.X - (int)changeGridPos.x, creepGridPos.Y - (int)changeGridPos.y);
             Vector3 destination = LevelGenerator.Instance.tiles[tmp].centreOfTile;
-            this.transform.position = Vector2.MoveTowards(this.transform.position, destination, 5.0f * Time.deltaTime);
+            this.transform.position = Vector2.MoveTowards(this.transform.position, destination, this.projectileSpeed * Time.deltaTime);
             if (this.transform.position == destination)
             {
                 Destroy(this.gameObject);
@@ -67,7 +71,7 @@ public class SmallProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Visible")
+        if (collision.tag == GameHandler.Instance.Visible)
             StartCoroutine(DestroyObj());
     }
 

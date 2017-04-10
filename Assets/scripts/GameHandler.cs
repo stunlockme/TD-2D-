@@ -132,7 +132,7 @@ public class GameHandler : Singleton<GameHandler>
     [SerializeField]
     private GameObject MenuBtn;
 
-    private GameObject spawnGateObj;
+    private GameObject spawnGateObj, spawnGate2Obj;
 
     private void Awake()
     {
@@ -182,12 +182,19 @@ public class GameHandler : Singleton<GameHandler>
         {
             StartCoroutine(LoadGameOver());
         }
+
+        if(this.waveCount == 2)
+        {
+            LevelGenerator.Instance.LoadMedievalMap = true;
+        }
     }
 
     private void SetSpawnGateObj()
     {
         if (this.spawnGateObj == null)
             this.spawnGateObj = GameObject.FindGameObjectWithTag("SpawnPos");
+        if (this.spawnGate2Obj == null)
+            this.spawnGate2Obj = GameObject.FindGameObjectWithTag("SpawnPos2");
     }
 
     private void LoadMenu()
@@ -273,7 +280,7 @@ public class GameHandler : Singleton<GameHandler>
     public void SpawnCreeps()
     {
         this.waveCount++;
-        this.creepsToSpawn = this.waveCount * 5;
+        this.creepsToSpawn = this.waveCount * 1;
         this.waveText.text = this.waveCount.ToString();
         StartCoroutine(CreateCreep());
         this.spawnCreepBtn.SetActive(false);
@@ -287,26 +294,44 @@ public class GameHandler : Singleton<GameHandler>
     {
         for (int i = 0; i < creepsToSpawn; i++)
         {
-            this.spawnGateObj.SetActive(true);
-            LevelGenerator.Instance.CreateWayPoints(LevelGenerator.Instance.SpawnPos, LevelGenerator.Instance.DestinationPos);
-            int creepIndex = Random.Range(0, 2);
-            creepType = string.Empty;
-            switch (creepIndex)
+            if(this.spawnGateObj != null)
+                this.spawnGateObj.SetActive(true);
+            if(this.spawnGate2Obj != null)
+                this.spawnGate2Obj.SetActive(true);
+            if (LevelGenerator.Instance.tiles.ContainsKey(LevelGenerator.Instance.SpawnPos) && LevelGenerator.Instance.tiles.ContainsKey(LevelGenerator.Instance.DestinationPos))
             {
-                case 0:
-                    creepType = this.caveMan;
-                    break;
-                case 1:
-                    creepType = this.bigCaveMan;
-                    break;
+                int creepIndex = Random.Range(0, 2);
+                creepType = string.Empty;
+                switch (creepIndex)
+                {
+                    case 0:
+                        creepType = this.caveMan;
+                        break;
+                    case 1:
+                        creepType = this.bigCaveMan;
+                        break;
+                }
+                Creep creep = GetCreepType(creepType).GetComponent<Creep>();
+                creep.name = RandomString(4);
+                this.creepsInScene.Add(creep.name);
+                if (LevelGenerator.Instance.spawnPosList.Count > 0)
+                {
+                    int spawnIndex = Random.Range(0, 2);
+                    LevelGenerator.Instance.CreateWayPoints(LevelGenerator.Instance.spawnPosList[spawnIndex], LevelGenerator.Instance.DestinationPos);
+                    creep.Spawn(LevelGenerator.Instance.spawnPosList[spawnIndex]);
+                }
+                else
+                {
+                    LevelGenerator.Instance.CreateWayPoints(LevelGenerator.Instance.SpawnPos, LevelGenerator.Instance.DestinationPos);
+                    creep.Spawn(LevelGenerator.Instance.SpawnPos);
+                }
+                yield return new WaitForSeconds(0.5f);
+                if(this.spawnGateObj != null)
+                    this.spawnGateObj.SetActive(false);
+                if(this.spawnGate2Obj != null)
+                    this.spawnGate2Obj.SetActive(false);
+                yield return new WaitForSeconds(1.0f);
             }
-            Creep creep = GetCreepType(creepType).GetComponent<Creep>();
-            creep.name = RandomString(4);
-            this.creepsInScene.Add(creep.name);
-            creep.Spawn();
-            yield return new WaitForSeconds(0.5f);
-            this.spawnGateObj.SetActive(false);
-            yield return new WaitForSeconds(1.0f);
         }
     }
 

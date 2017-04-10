@@ -27,12 +27,25 @@ public class Creep : MonoBehaviour
 
     [SerializeField]
     private Stat health;
+    public Stat Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            health = value;
+        }
+    }
 
     private Animator animator;
     private const string vertical = "Vertical";
     private const string horizontal = "Horizontal";
     private const string projectile = "Projectile";
+    private const string smallProjectile = "smallProjectile";
     private const string Unit = "Unit";
+    private const string stun = "Stun";
 
     private BarrackUnit barrackUnitTarget;
     private Queue<BarrackUnit> unitQueue = new Queue<BarrackUnit>();
@@ -41,6 +54,7 @@ public class Creep : MonoBehaviour
     private bool attackIsActive = false;
     private bool isStunned;
     private float stunTimer;
+    private float timeToBeStunned;
     private bool fightingUnit;
     public bool FightingUnit
     {
@@ -113,16 +127,16 @@ public class Creep : MonoBehaviour
     {
         if (this.wayPoints != null)
         {
-            if (!LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile && !isStunned)
+            if (!isStunned && !fightingUnit)
                 MoveToDestination();
             else
                 Attack();
         }
 
-        if(isStunned)
+        if(this.isStunned)
         {
-            stunTimer += Time.deltaTime;
-            if(stunTimer > 3.0f)
+            this.stunTimer += Time.deltaTime;
+            if(this.stunTimer > this.timeToBeStunned)
             {
                 isStunned = false;
                 stunTimer = 0;
@@ -163,6 +177,10 @@ public class Creep : MonoBehaviour
             {
                 this.barrackUnitTarget.Health.CurrentVal -= 1.0f;
                 this.attackIsActive = false;
+            }
+            if (this.gridPos.X >= this.barrackUnitTarget.Gridpos.X + 1)
+            {
+                this.barrackUnitTarget = null;
             }
         }
     }
@@ -216,9 +234,14 @@ public class Creep : MonoBehaviour
     /// spawns this object at the starting position
     /// sets the waypoints for this creep 
     /// </summary>
-    public void Spawn()
+    public void Spawn(GridPos spawnTile)
     {
-        this.transform.position = LevelGenerator.Instance.creepGate.transform.position;
+        //List<Vector3> spawnPosList = new List<Vector3>();
+        //spawnPosList.Add(LevelGenerator.Instance.creepGate.transform.position);
+        //spawnPosList.Add(LevelGenerator.Instance.creepGate2.transform.position);
+        //int spawnIndex = Random.Range(0, 2);
+        this.transform.position = LevelGenerator.Instance.tiles[spawnTile].centreOfTile;
+        //this.transform.position = LevelGenerator.Instance.creepGate.transform.position;
         FindWayPoints(LevelGenerator.Instance.WayPoints, this.name);
         return;
     }
@@ -267,28 +290,22 @@ public class Creep : MonoBehaviour
             this.health.CurrentVal -= tp.Damage;
             return;
         }
-        if(collision.tag == "HeavyProjectile")
-        {
-            //Debug.Log("creep grid Pos : " + sp.creepGridPos.X + " " + sp.creepGridPos.Y);
-            TowerProjectile tp = collision.GetComponent<TowerProjectile>();
-            this.health.CurrentVal -= tp.Damage;
-            return;
-        }
-        if(collision.tag == "SmallProjectile")
+        if(collision.tag == smallProjectile)
         {
             SmallProjectile sp = collision.GetComponent<SmallProjectile>();
             this.health.CurrentVal -= sp.Damage;
             return;
         }
-        if (collision.tag == "Stun")
+        if (collision.tag == stun)
         {
+            TowerProjectile tp = collision.GetComponent<TowerProjectile>();
+            this.timeToBeStunned = tp.StunTime;
             isStunned = true;
         }
 
         if(collision.tag == Unit)
         {
             this.unitQueue.Enqueue(collision.GetComponent<BarrackUnit>());
-            //Debug.Log("added to queue");
         }
     }
 

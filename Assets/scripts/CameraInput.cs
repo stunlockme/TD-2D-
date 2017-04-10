@@ -13,10 +13,18 @@ public class CameraInput : MonoBehaviour
     private float minOrtho;
     private float maxOrtho;
     private const string mouseWheel = "Mouse ScrollWheel";
+    private AudioSource audioSource;
+
+
+    private void Awake()
+    {
+        this.audioSource = GetComponent<AudioSource>();
+    }
 
 
     private void Start ()
     {
+        this.audioSource.Play();
         this.camSpeed = 5.0f;
         this.xMax = 0;
         this.yMin = 0;
@@ -33,6 +41,15 @@ public class CameraInput : MonoBehaviour
         ResetCameraSize();
         this.transform.position = new Vector3(Mathf.Clamp(this.transform.position.x, 0, this.xMax), Mathf.Clamp(this.transform.position.y, this.yMin, 0), -10.0f);
         Zoom();
+
+        if(Input.GetKey(KeyCode.X))
+        {
+            audioSource.Stop();
+        }
+        else if(Input.GetKey(KeyCode.C))
+        {
+            audioSource.Play();
+        }
 	}
 
     /// <summary>

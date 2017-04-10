@@ -6,6 +6,13 @@ public class BarrackUnit : MonoBehaviour
 {
     private TileData td;
     private GridPos gridPos;
+    public GridPos Gridpos
+    {
+        get
+        {
+            return gridPos;
+        }
+    }
     private SpriteRenderer spriteRenderer;
     [SerializeField]
     private int gridX;
@@ -53,10 +60,12 @@ public class BarrackUnit : MonoBehaviour
     private Vector3 attackPos;
     private float criticalHealth;
     private string targetName;
+    private BoxCollider2D myCollider;
 
     private void Awake()
     {
         this.spriteRenderer = GetComponent<SpriteRenderer>();
+        this.myCollider = GetComponent<BoxCollider2D>();
         this.health.Init();
     }
 
@@ -102,10 +111,12 @@ public class BarrackUnit : MonoBehaviour
         }
         if (this.health.CurrentVal <= this.criticalHealth)
         {
+            if (this.CreepTarget != null)
+                this.CreepTarget.FightingUnit = false;
             this.transform.position = Vector2.MoveTowards(this.transform.position, LevelGenerator.Instance.tiles[this.td.gridPosition].centreOfTile, 2.0f * Time.deltaTime);
             this.creepTarget = null;
             this.creepQueue.Clear();
-            LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = false;
+            //LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = false;
             this.returnToBase = true;
         }
 
@@ -143,6 +154,11 @@ public class BarrackUnit : MonoBehaviour
 
         if (this.creepTarget != null)
         {
+            if (this.creepTarget.IsDead)
+            {
+                this.myCollider.enabled = true;
+                //LevelGenerator.Instance.tiles[this.gridPos].UnitOnTile = true;
+            }
             this.CreepTarget.FightingUnit = true;
             if (this.creepTarget.GridPos.X > this.gridPos.X + 1 || this.CreepTarget.GridPos.X < this.gridPos.X - 1)
             {
@@ -161,9 +177,11 @@ public class BarrackUnit : MonoBehaviour
                 {
                     if (this.creepTarget.transform.gameObject.tag == GameHandler.Instance.Visible)
                     {
-                        TowerProjectile tp = GameHandler.Instance.GetTowerProjectileType(this.tpType).GetComponent<TowerProjectile>();
-                        tp.transform.position = this.transform.position;
-                        tp.Init(null, this);
+                        //play attack animation
+                        this.CreepTarget.Health.CurrentVal -= 1.0f;
+                        //TowerProjectile tp = GameHandler.Instance.GetTowerProjectileType(this.tpType).GetComponent<TowerProjectile>();
+                        //tp.transform.position = this.transform.position;
+                        //tp.Init(null, this);
                         this.attackIsActive = false;
                     }
                 }
@@ -179,13 +197,15 @@ public class BarrackUnit : MonoBehaviour
     {
         if (collision.tag == GameHandler.Instance.Visible)
         {
-            if (this.targetName == null)
+            if(this.creepTarget == null)
             {
                 this.creepQueue.Enqueue(collision.GetComponent<Creep>());
                 Creep creep = collision.GetComponent<Creep>();
                 this.targetName = creep.name;
-                Debug.Log("name is : " + this.targetName);
+                this.myCollider.enabled = false;
+                Debug.Log("Creep added to attack");
             }
+            //Debug.Log("name is : " + this.targetName);
         }
     }
 
@@ -197,12 +217,7 @@ public class BarrackUnit : MonoBehaviour
     {
         if (collision.tag == GameHandler.Instance.Visible)
         {
-            Creep creep = collision.GetComponent<Creep>();
-            Debug.Log("exit creep name : " + creep.name);
-            if (creep.name == this.targetName)
-            {
-                this.creepTarget = null;
-            }
+            this.creepTarget = null;
         }
     }
 
